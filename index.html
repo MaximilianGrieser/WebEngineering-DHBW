@@ -4,14 +4,247 @@
 <html>
 
 <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="CSS/style.css">
     <title>SampleTitle</title>
 </head>
 
 <body>
-    <h1>Willommen Dies ist die Startseite</h1>
-    <p>Dieser Text ist mega cool, trotzdem wird er wahrscheinlich bald ersetzt :(</p>
+    <!--Navbar-->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Web Kalender</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <svg class="bi bi-house-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                        <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                    <span class="sr-only">(current)</span>
+                </a>
+                </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Features</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="#">Pricing</a>
+                 </li>
+                 <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Dropdown link
+                     </a>
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                         <a class="dropdown-item" href="#">Action</a>
+                         <a class="dropdown-item" href="#">Another action</a>
+                         <a class="dropdown-item" href="#">Something else here</a>
+                     </div>
+                 </li>
+            </ul>
+        </div>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
+
+    <div class="calender">
+        <div class="month">
+            <button class="prev-month button-month" onclick="prevMonth()"">
+                <svg class="bi bi-chevron-compact-left" width="5em" height="5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223z"/>
+                </svg>
+            </button>
+            <button class="next-month button-month" onclick="nextMonth()">
+                <svg class="bi bi-chevron-compact-right" width="5em" height="5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
+                </svg>
+            </button>
+            <p class="month-header" id="currMonth">Month</p>
+        </div>
+        
+        <div class="days">
+            <table class="days_table">
+                <tr>
+                    <th id="weekday1">Monday</th>
+                    <th id="weekday2">Tuesday</th>
+                    <th id="weekday3">Wednesday</th>
+                    <th id="weekday4">Thurday</th>
+                    <th id="weekday5">Friday</th>
+                    <th id="weekday6">Saturday</th>
+                    <th id="weekday0">Sunday</th>
+                </tr>
+                <tr class="days-row0">
+                    <td id="weekday_days_0_row_0">X</td>
+                    <td id="weekday_days_1_row_0">X</td>
+                    <td id="weekday_days_2_row_0">X</td>
+                    <td id="weekday_days_3_row_0">X</td>
+                    <td id="weekday_days_4_row_0">X</td>
+                    <td id="weekday_days_5_row_0">X</td>
+                    <td id="weekday_days_6_row_0">X</td>
+                </tr>
+                <tr class="days-row1">
+                    <td id="weekday_days_0_row_1">X</td>
+                    <td id="weekday_days_1_row_1">X</td>
+                    <td id="weekday_days_2_row_1">X</td>
+                    <td id="weekday_days_3_row_1">X</td>
+                    <td id="weekday_days_4_row_1">X</td>
+                    <td id="weekday_days_5_row_1">X</td>
+                    <td id="weekday_days_6_row_1">X</td>
+                </tr>
+                <tr class="days-row2">
+                    <td id="weekday_days_0_row_2">X</td>
+                    <td id="weekday_days_1_row_2">X</td>
+                    <td id="weekday_days_2_row_2">X</td>
+                    <td id="weekday_days_3_row_2">X</td>
+                    <td id="weekday_days_4_row_2">X</td>
+                    <td id="weekday_days_5_row_2">X</td>
+                    <td id="weekday_days_6_row_2">X</td>
+                </tr>
+                <tr class="days-row3">
+                    <td id="weekday_days_0_row_3">X</td>
+                    <td id="weekday_days_1_row_3">X</td>
+                    <td id="weekday_days_2_row_3">X</td>
+                    <td id="weekday_days_3_row_3">X</td>
+                    <td id="weekday_days_4_row_3">X</td>
+                    <td id="weekday_days_5_row_3">X</td>
+                    <td id="weekday_days_6_row_3">X</td>
+                </tr>
+                <tr class="days-row4">
+                    <td id="weekday_days_0_row_4">X</td>
+                    <td id="weekday_days_1_row_4">X</td>
+                    <td id="weekday_days_2_row_4">X</td>
+                    <td id="weekday_days_3_row_4">X</td>
+                    <td id="weekday_days_4_row_4">X</td>
+                    <td id="weekday_days_5_row_4">X</td>
+                    <td id="weekday_days_6_row_4">X</td>
+                </tr>
+                <tr class="days-row5">
+                    <td id="weekday_days_0_row_5">X</td>
+                    <td id="weekday_days_1_row_5">X</td>
+                    <td id="weekday_days_2_row_5">X</td>
+                    <td id="weekday_days_3_row_5">X</td>
+                    <td id="weekday_days_4_row_5">X</td>
+                    <td id="weekday_days_5_row_5">X</td>
+                    <td id="weekday_days_6_row_5">X</td>
+                </tr>
+            </table>
+        </div>
+
+        <button class="add-calender-entry">
+            <svg class="bi bi-plus-circle" width="4em" height="4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+                <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var maxDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        
+        var today = new Date();
+        var selectedMonthIndex = today.getMonth();
+        var todayDate = today.getDate();
+        var todayDay = today.getDay();
+
+        var displayTable = [
+            ["X","X","X","X","X","X","X"],
+            ["X","X","X","X","X","X","X"],
+            ["X","X","X","X","X","X","X"],
+            ["X","X","X","X","X","X","X"],
+            ["X","X","X","X","X","X","X"],
+            ["X","X","X","X","X","X","X"]
+        ]
+
+        window.onload = function() {
+            document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
+            document.getElementById("weekday" + todayDay).classList.add("weekday-today");
+
+            var todayRow = getActualRow(todayDate, todayDay);
+            todayElement = document.getElementById("weekday_days_" + (todayDay - 1)+ "_row_" + (todayRow - 1));
+            todayElement.classList.add("day-today");
+            displayTable[todayRow -1][todayDay -1] = todayDate;
+
+            var currentRow = todayRow;
+            var currentDay = todayDay;
+            var currentDate = todayDate;
+
+            while(currentDate > 1) {
+                currentDate--;
+                currentDay--;
+                if(currentDay < -1 ) {
+                    currentDay = 6;
+                }
+                currentRow = getActualRow(currentDate, currentDay);
+                displayTable[currentRow -1][currentDay -1] = currentDate;
+            }
+
+            currentRow = todayRow;
+            currentDay = todayDay;
+            currentDate = todayDate;           
+
+            while(currentRow < 7) {
+                while(currentDay < 7) {
+                    currentDate++;
+                    currentDay++;
+                    if(currentDate > maxDaysInMonth[selectedMonthIndex]) {
+                        currentDate = 1;
+                    }
+                    displayTable[currentRow -1][currentDay -1] = currentDate;
+                }
+                currentDay = 0
+                currentRow++;
+            }
+
+            console.log(displayTable);
+
+            for(i = 0; i < 6; i++) {
+                for(y = 0; y < 7; y++) {
+                    document.getElementById("weekday_days_" + y + "_row_" + i).innerHTML = displayTable[i][y];
+                }
+            }
+        }
+
+        function getActualRow(date, weekday) {
+            var row = Math.floor(date / 7)            
+            if (weekday != 0) {
+                row++;
+            }
+            return row;
+        }
+
+        function nextMonth() {
+            selectedMonthIndex++;
+            if(selectedMonthIndex > 11) {
+                selectedMonthIndex = 0
+            }
+            document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
+        }
+
+        function prevMonth() {
+            selectedMonthIndex--;
+            if(selectedMonthIndex < 1) {
+                selectedMonthIndex = 11
+            }
+            document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
+        }
+    </script>
 </body>
 
 </html>
