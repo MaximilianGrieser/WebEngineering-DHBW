@@ -158,12 +158,15 @@
         var maxDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         
+        var firstDayInNextMonth = 0;
+        var firstDayInMonth = 5;
+
         var today = new Date();
         var selectedMonthIndex = today.getMonth();
         var todayDate = today.getDate();
         var todayDay = today.getDay();
 
-        var displayTable = [
+        var daysGrid = [
             ["X","X","X","X","X","X","X"],
             ["X","X","X","X","X","X","X"],
             ["X","X","X","X","X","X","X"],
@@ -179,46 +182,9 @@
             var todayRow = getActualRow(todayDate, todayDay);
             todayElement = document.getElementById("weekday_days_" + (todayDay - 1)+ "_row_" + (todayRow - 1));
             todayElement.classList.add("day-today");
-            displayTable[todayRow -1][todayDay -1] = todayDate;
-
-            var currentRow = todayRow;
-            var currentDay = todayDay;
-            var currentDate = todayDate;
-
-            while(currentDate > 1) {
-                currentDate--;
-                currentDay--;
-                if(currentDay < -1 ) {
-                    currentDay = 6;
-                }
-                currentRow = getActualRow(currentDate, currentDay);
-                displayTable[currentRow -1][currentDay -1] = currentDate;
-            }
-
-            currentRow = todayRow;
-            currentDay = todayDay;
-            currentDate = todayDate;           
-
-            while(currentRow < 7) {
-                while(currentDay < 7) {
-                    currentDate++;
-                    currentDay++;
-                    if(currentDate > maxDaysInMonth[selectedMonthIndex]) {
-                        currentDate = 1;
-                    }
-                    displayTable[currentRow -1][currentDay -1] = currentDate;
-                }
-                currentDay = 0
-                currentRow++;
-            }
-
-            console.log(displayTable);
-
-            for(i = 0; i < 6; i++) {
-                for(y = 0; y < 7; y++) {
-                    document.getElementById("weekday_days_" + y + "_row_" + i).innerHTML = displayTable[i][y];
-                }
-            }
+            
+            fillDaysGrid(todayRow, todayDay, todayDate);
+            printDaysGrid();
         }
 
         function getActualRow(date, weekday) {
@@ -229,12 +195,62 @@
             return row;
         }
 
+        function fillDaysGrid(pRow, pDay, pDate) {
+            var currentRow = pRow;
+            var currentDay = pDay -1;
+            var currentDate = pDate;
+
+            daysGrid[pRow -1][pDay -1] = pDate;
+
+            console.log(pRow,pDate,pDay);
+
+            for(i = currentRow; i >= 1; i--){
+                for(y = currentDay; y >= 1; y--){
+                    currentDate--;
+                    if(currentDate < 1){
+                        firstDayInMonth = (y +1);
+                        currentDate = maxDaysInMonth[selectedMonthIndex -1];
+                    }
+                    daysGrid[i -1][y -1] = currentDate;
+                }
+                currentDay = 7;
+            }
+
+            currentRow = pRow;
+            currentDay = pDay +1;
+            currentDate = pDate;           
+
+            for(i = currentRow; i < 7; i++){
+                for(y = currentDay; y <= 7; y++){
+                    currentDate++;
+                    if(currentDate > maxDaysInMonth[selectedMonthIndex]){
+                        firstDayInNextMonth = y;
+                        currentDate = 1;
+                    }
+                    daysGrid[i -1][y -1] = currentDate;
+                }
+                currentDay = 1;
+            }
+            console.log(daysGrid);
+        }
+
+        function printDaysGrid() {
+            for(i = 0; i < 6; i++) {
+                for(y = 0; y < 7; y++) {
+                    document.getElementById("weekday_days_" + y + "_row_" + i).innerHTML = daysGrid[i][y];
+                }
+            }
+        }
+
         function nextMonth() {
             selectedMonthIndex++;
             if(selectedMonthIndex > 11) {
                 selectedMonthIndex = 0
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
+
+            fillDaysGrid(1, firstDayInNextMonth, 1);
+            printDaysGrid();
         }
 
         function prevMonth() {
@@ -243,6 +259,10 @@
                 selectedMonthIndex = 11
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
+
+            console.log(firstDayInMonth);
+            fillDaysGrid(1, firstDayInMonth, 1);
+            printDaysGrid();
         }
     </script>
 </body>
