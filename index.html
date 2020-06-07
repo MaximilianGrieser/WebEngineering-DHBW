@@ -179,6 +179,10 @@
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
             document.getElementById("weekday" + todayDay).classList.add("weekday-today");
 
+            if(todayDay == 0){
+                todayDay = 7;
+            }
+
             var todayRow = getActualRow(todayDate, todayDay);
             todayElement = document.getElementById("weekday_days_" + (todayDay - 1)+ "_row_" + (todayRow - 1));
             todayElement.classList.add("day-today");
@@ -189,7 +193,7 @@
 
         function getActualRow(date, weekday) {
             var row = Math.floor(date / 7)            
-            if (weekday != 0) {
+            if (weekday != 7) {
                 row++;
             }
             return row;
@@ -259,9 +263,8 @@
                 selectedMonthIndex = 11
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
-
-            console.log(firstDayInMonth);
-            fillDaysGrid(1, firstDayInMonth, 1);
+            
+            fillDaysGrid(1, firstDayInNextMonth + 1 , maxDaysInMonth[selectedMonthIndex]);
             printDaysGrid();
         }
     </script>
