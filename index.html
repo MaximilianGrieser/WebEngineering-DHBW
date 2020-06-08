@@ -63,7 +63,7 @@
 
     <div class="calender">
         <div class="month">
-            <button class="prev-month button-month" onclick="prevMonth()"">
+            <button class="prev-month button-month" onclick="prevMonth()">
                 <svg class="bi bi-chevron-compact-left" width="5em" height="5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223z"/>
                 </svg>
@@ -203,10 +203,10 @@
             var currentRow = pRow;
             var currentDay = pDay -1;
             var currentDate = pDate;
+            var notInMonth = false
 
+            console.log(pRow,pDay,pDate);
             daysGrid[pRow -1][pDay -1] = pDate;
-
-            console.log(pRow,pDate,pDay);
 
             for(i = currentRow; i >= 1; i--){
                 for(y = currentDay; y >= 1; y--){
@@ -214,6 +214,10 @@
                     if(currentDate < 1){
                         firstDayInMonth = (y +1);
                         currentDate = maxDaysInMonth[selectedMonthIndex -1];
+                        notInMonth = true;
+                    }
+                    if(notInMonth){
+                        document.getElementById("weekday_days_" + (y -1) + "_row_" + (i -1)).classList.add("day-not-in-month");
                     }
                     daysGrid[i -1][y -1] = currentDate;
                 }
@@ -222,7 +226,8 @@
 
             currentRow = pRow;
             currentDay = pDay +1;
-            currentDate = pDate;           
+            currentDate = pDate;
+            notInMonth = false;           
 
             for(i = currentRow; i < 7; i++){
                 for(y = currentDay; y <= 7; y++){
@@ -230,12 +235,25 @@
                     if(currentDate > maxDaysInMonth[selectedMonthIndex]){
                         firstDayInNextMonth = y;
                         currentDate = 1;
+                        notInMonth = true;
+                    }
+                    if(notInMonth){
+                        document.getElementById("weekday_days_" + (y -1) + "_row_" +(i -1)).classList.add("day-not-in-month");
                     }
                     daysGrid[i -1][y -1] = currentDate;
                 }
                 currentDay = 1;
             }
             console.log(daysGrid);
+        }
+
+        function removeMonthSpecififcClasses() {
+            for(i = 0; i < 6; i++) {
+                for(y = 0; y < 7; y++) {
+                    document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("day-not-in-month");
+                    document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("weekday-today");
+                }
+            }
         }
 
         function printDaysGrid() {
@@ -253,6 +271,7 @@
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
 
+            removeMonthSpecififcClasses();
             fillDaysGrid(1, firstDayInNextMonth, 1);
             printDaysGrid();
         }
@@ -264,7 +283,8 @@
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
             
-            fillDaysGrid(1, firstDayInNextMonth + 1 , maxDaysInMonth[selectedMonthIndex]);
+            removeMonthSpecififcClasses();
+            fillDaysGrid(1, firstDayInMonth , 1);
             printDaysGrid();
         }
     </script>
