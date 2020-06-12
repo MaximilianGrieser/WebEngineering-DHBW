@@ -1,3 +1,8 @@
+div.navbar{
+    font-size: large;
+    font-weight: bold;
+}
+
 div.month {
     background-color: grey;
     width: 100%;
@@ -56,6 +61,7 @@ div.days {
 }
 
 table.days_table {
+    position: absolute;
     width: inherit;
     height: inherit;
 }
@@ -68,9 +74,13 @@ td.day-not-in-month{
     color: hotpink;
 }
 
-td {
+table.days_table td {
     padding: 8px;
     text-align: center;
+}
+
+table.days_table td:hover{
+    background-color: blue;
 }
 
 button.add-calender-entry {
@@ -88,4 +98,17 @@ button.add-calender-entry {
 }
 button.add-calender-entry:hover {
     background-color: green;
+}
+
+div.new-entry-form {
+    position: relative;
+    display: none;
+    margin: 0 auto;
+    padding: 10px;
+    width: 420px;
+    background-color: gray;
+}
+
+div.blur{
+    filter: blur(4px);
 }
