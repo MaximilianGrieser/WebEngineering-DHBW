@@ -109,6 +109,6 @@ div.new-entry-form {
     background-color: gray;
 }
 
-div.blur{
+.blur{
     filter: blur(4px);
 }

@@ -123,35 +123,35 @@
 
     <!--Neuer Termin-->
     <div class="new-entry-form" id="new-entry-form">
-        <form class="newEntry">
+        <form class="newEntry" id="newEntry">
             <table class="new-entry-form">
                 <tr>
                     <td>
-                        <input type="text" id="ftitle" name="ftitle" value="Name des Termins">   
+                        <input type="text" id="ftitle" name="title" value="Title">   
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <p>Start:</p>
-                        <input type="date" id="fstartdate" name="fstartdate">
-                        <input type="time" id="fstarttime" name="fstarttime">
-                        <input type="checkbox" id="fganztag" name="fganztag">
+                        <input type="date" id="fstartdate" name="startdate">
+                        <input type="time" id="fstarttime" name="starttime">
+                        <input type="checkbox" id="fganztag" name="ganztag" onclick="hideDateEnd()">
                         <label for="fganztag">Ganzt&auml;gig</label>
                     </td>
-                    <td>
+                    <td id="endDate">
                         <p>Ende:</p>
-                        <input type="date" id="fenddate" name="fenddate">
-                        <input type="time" id="fendtime" name="fendtime">
+                        <input type="date" id="fenddate" name="enddate">
+                        <input type="time" id="fendtime" name="endtime">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="textarea" id="fbesch" name="fbesch" value="Beschreibung">
+                        <input type="textarea" id="fsummary" name="summary" value="Summary">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" id="fort" name="fort" value="Ort">
+                        <input type="text" id="flocation" name="location" value="Location">
                     </td>
                 </tr>
                 <tr>
@@ -164,6 +164,8 @@
     </div>
 
     <script>
+        src="jquery-3.1.1.min.js"
+        
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var maxDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -198,11 +200,10 @@
             todayElement.classList.add("day-today");
             
             fillDaysGrid(todayRow, todayDay, todayDate);
-            printDaysGrid();
         }
 
         function getActualRow(date, weekday) {
-            var row = Math.floor(date / 7)            
+            var row = Math.floor(date / 7);          
             if (weekday != 7) {
                 row++;
             }
@@ -255,13 +256,15 @@
                 currentDay = 1;
             }
             console.log(daysGrid);
+
+            printDaysGrid();
         }
 
-        function removeMonthSpecififcClasses() {
+        function removeMonthSpecificClasses() {
             for(i = 0; i < 6; i++) {
                 for(y = 0; y < 7; y++) {
                     document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("day-not-in-month");
-                    document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("weekday-today");
+                    document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("day-today");
                 }
             }
         }
@@ -281,9 +284,8 @@
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
 
-            removeMonthSpecififcClasses();
+            removeMonthSpecificClasses();
             fillDaysGrid(1, firstDayInNextMonth, 1);
-            printDaysGrid();
         }
 
         function prevMonth() {
@@ -293,9 +295,8 @@
             }
             document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
             
-            removeMonthSpecififcClasses();
+            removeMonthSpecificClasses();
             fillDaysGrid(1, firstDayInMonth , 1);
-            printDaysGrid();
         }
 
         function newEntry() {
@@ -303,10 +304,25 @@
             document.getElementById("new-entry-form").style.display = "block";
         }
 
+        function hideDateEnd() {
+            var objekt = document.getElementById("endDate").classList;
+            if(objekt.contains("blur")) {
+                objekt.remove("blur")
+            }else{
+                objekt.add("blur")
+            }
+        }
+
         document.querySelector('form.newEntry').addEventListener('submit', function (e) {
-        var nameInput = document.getElementById('ftitle');
-        e.preventDefault();
-        console.log(nameInput.value);    
+        var entryForm = document.getElementById("newEntry");
+        var entryFormData = new FormData(entryForm);
+
+        var Entry = {};
+        entryFormData.forEach(function(value, key){
+            Entry[key] = value;
+        });
+
+        console.log(JSON.stringify(Entry));
         });
     </script>
 </body>
