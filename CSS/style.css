@@ -56,10 +56,7 @@ th {
 div.days {
     background-color: #f0faf3;
     position: absolute;
-    background-color: lightgray;
     width: 100%;
-    height: 100%;
-
     height: calc(100vh - 15em);
 }
 
@@ -77,6 +74,8 @@ th {
     background-color: #ecfdf4;
     padding: 10px;
     text-align: center;
+}
+
 td.day-not-in-month{
     color: hotpink;
 }
@@ -100,8 +99,8 @@ button.add-calender-entry {
     background-color: #a0a0a0;
     border: none;
     outline: none;
-    padding: 0px;
-    box-shadow: 0px 0px 15px 0px black;
+    padding: 0;
+    box-shadow: 0 0 15px 0 black;
 }
 button.add-calender-entry:hover {
     background-color: #a3f6ac;

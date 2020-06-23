@@ -25,7 +25,7 @@ window.onload = function() {
     document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
     document.getElementById("weekday" + todayDay).classList.add("weekday-today");
 
-    if(todayDay == 0){
+    if(todayDay === 0){
         todayDay = 7;
     }
 
@@ -38,16 +38,36 @@ window.onload = function() {
 
 function getActualRow(date, weekday) {
     var row = Math.floor(date / 7);
-    if (weekday != 7) {
+    if (weekday !== 7) {
         row++;
     }
     return row;
 }
 
-function fillDaysGrid(pRow, pDay, pDate) {
-    if (pDay == 0) {
-        pDay = 7;
+function getFirstDay(y) {
+    help = maxDaysInMonth[selectedMonthIndex - 1] % 7;
+    help = (y + 1) - help;
+
+    switch (help) {
+        case 0:
+            firstDayInMonth = 7;
+            break;
+        case -1:
+            firstDayInMonth = 6;
+            break;
+        case -2:
+            firstDayInMonth = 5;
+            break;
+        case -3:
+            firstDayInMonth = 4;
+            break;
+        default:
+            firstDayInMonth = help;
+            break;
     }
+}
+
+function fillDaysGrid(pRow, pDay, pDate) {
     
     var currentRow = pRow;
     var currentDay = pDay -1;
@@ -57,28 +77,18 @@ function fillDaysGrid(pRow, pDay, pDate) {
     console.log(pRow,pDay,pDate);
     daysGrid[pRow -1][pDay -1] = pDate;
 
+    if(currentDay === 0){
+        getFirstDay(1);
+    }
+
     for(i = currentRow; i >= 1; i--){
         for(y = currentDay; y >= 1; y--){
             currentDate--;
             if(currentDate < 1){
-                help = maxDaysInMonth[selectedMonthIndex -1] % 7;
-                help = (y +1) - help;
-
-                switch(help) {
-                    case -1:
-                        firstDayInMonth = 6;
-                        break;
-                    case -2:
-                        firstDayInMonth = 5;
-                        break;
-                    case -3:
-                        firstDayInMonth = 4;
-                        break;
-                    default:
-                        firstDayInMonth = help;
-                        break;
+                if (selectedMonthIndex === 0){
+                    selectedMonthIndex = 12;
                 }
-
+                getFirstDay(y);
                 console.log(firstDayInMonth);
                 currentDate = maxDaysInMonth[selectedMonthIndex -1];
                 notInMonth = true;
@@ -146,7 +156,7 @@ function nextMonth() {
 
 function prevMonth() {
     selectedMonthIndex--;
-    if(selectedMonthIndex < 1) {
+    if(selectedMonthIndex < 0) {
         selectedMonthIndex = 11
     }
     document.getElementById("currMonth").innerHTML = months[selectedMonthIndex];
