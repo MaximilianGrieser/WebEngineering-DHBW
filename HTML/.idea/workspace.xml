@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9f58ddd6-7eb3-402e-a46a-f2a1d1409a28" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../index.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1dj90t0xKMGLU309AA02ok9cwSC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../script.js" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.web.browsers" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9f58ddd6-7eb3-402e-a46a-f2a1d1409a28" name="Default Changelist" comment="" />
+      <created>1592927415728</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1592927415728</updated>
+      <workItem from="1592927417175" duration="602000" />
+      <workItem from="1592928194644" duration="380000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1011" y="586" key="#Chrome_Settings" timestamp="1592928520179">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1011" y="586" key="#Chrome_Settings/-2560.0.2560.1400/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592928520179" />
+    <state x="760" y="274" key="#Project_Structure" timestamp="1592927421615">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="760" y="274" key="#Project_Structure/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927421615" />
+    <state x="734" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592928569117">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="734" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog/-2560.0.2560.1400/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592928569117" />
+    <state x="734" y="355" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927733474" />
+    <state x="1060" y="455" key="FileChooserDialogImpl" timestamp="1592928494183">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1060" y="455" key="FileChooserDialogImpl/-2560.0.2560.1400/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592928494183" />
+    <state x="1060" y="455" key="FileChooserDialogImpl/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927554556" />
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom" timestamp="1592927768209">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927768209" />
+    <state width="2517" height="401" key="GridCell.Tab.0.center" timestamp="1592927768209">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927768209" />
+    <state width="2517" height="401" key="GridCell.Tab.0.left" timestamp="1592927768209">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927768209" />
+    <state width="2517" height="401" key="GridCell.Tab.0.right" timestamp="1592927768209">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400/-2560.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592927768209" />
+    <state x="721" y="342" key="SettingsEditor" timestamp="1592928545986">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="721" y="342" key="SettingsEditor/-2560.0.2560.1400/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592928545986" />
+    <state x="2163" y="342" key="SettingsEditor/0.0.7680.1400@0.0.7680.1400" timestamp="1592928042898" />
+    <state x="943" y="315" key="search.everywhere.popup" timestamp="1592928269156">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="943" y="315" key="search.everywhere.popup/-2560.0.2560.1400/0.0.2560.1400/2560.0.2560.1400@0.0.2560.1400" timestamp="1592928269156" />
+  </component>
+</project>

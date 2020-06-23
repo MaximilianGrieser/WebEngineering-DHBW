@@ -1,3 +1,8 @@
+div.navbar{
+    font-size: large;
+    font-weight: bold;
+}
+
 div.month {
     background-color: #a4facc;
     width: 100%;
@@ -41,14 +46,25 @@ th.weekday-today {
     background-color: #a7f1bf;
 }
 
+th {
+    background-color: #666;
+    padding: 10px;
+    text-align: center;
+    height: 4em;
+}
+
 div.days {
     background-color: #f0faf3;
+    position: absolute;
+    background-color: lightgray;
     width: 100%;
     height: 100%;
 
+    height: calc(100vh - 15em);
 }
 
 table.days_table {
+    position: absolute;
     width: inherit;
     height: inherit;
 }
@@ -61,12 +77,17 @@ th {
     background-color: #ecfdf4;
     padding: 10px;
     text-align: center;
+td.day-not-in-month{
+    color: hotpink;
 }
 
-td {
-    height: 10em;
+table.days_table td {
     padding: 8px;
     text-align: center;
+}
+
+table.days_table td:hover{
+    background-color: blue;
 }
 
 button.add-calender-entry {
@@ -84,4 +105,17 @@ button.add-calender-entry {
 }
 button.add-calender-entry:hover {
     background-color: #a3f6ac;
+}
+
+div.new-entry-form {
+    position: relative;
+    display: none;
+    margin: 0 auto;
+    padding: 10px;
+    width: 420px;
+    background-color: gray;
+}
+
+.blur{
+    filter: blur(4px);
 }
