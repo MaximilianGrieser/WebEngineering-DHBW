@@ -74,6 +74,7 @@ th {
     background-color: #ecfdf4;
     padding: 10px;
     text-align: center;
+    width: 14.3%;
 }
 
 td.day-not-in-month{
@@ -113,6 +114,46 @@ div.new-entry-form {
     padding: 10px;
     width: 420px;
     background-color: gray;
+}
+
+table.new-entry-form td.close-new-entry {
+    text-align: right;
+}
+
+table.new-entry-form td.close-new-entry svg:hover {
+    background: blueviolet;
+}
+
+div.appointments-at-day {
+    position: relative;
+    display: none;
+    margin: 0 auto;
+    padding: 10px;
+    width: 500px;
+    height: 600px;
+    background-color: gray;
+}
+
+p.appointments-at-day-text {
+    width: 440px;
+    text-align: center;
+    font-size: large;
+}
+
+div.appointments-at-day-heading svg{
+    float: right;
+}
+
+div.appointments-at-day svg:hover{
+    background: blueviolet;
+}
+
+div.appointments-at-day-content li {
+    list-style: none;
+}
+
+li.selected {
+    background: lightblue;
 }
 
 .blur{
