@@ -1,6 +1,26 @@
-{
-    "name": "Meeting with HoS",
-    "start_date": "2020-06-25",
-    "start_time": "13:53",
-    "whole_day": true
-}
+[
+    {
+        "name": "Meeting with HoS",
+        "start_date": "2020-07-01",
+        "start_time": "13:53",
+        "whole_day": true
+    },
+    {
+        "name": "Meeting with Miri",
+        "start_date": "2020-07-01",
+        "start_time": "13:53",
+        "whole_day": true
+    },
+    {
+        "name": "Meeting with HoS",
+        "start_date": "2020-07-25",
+        "start_time": "13:53",
+        "whole_day": true
+    },
+    {
+        "name": "Meeting with HoM",
+        "start_date": "2020-07-26",
+        "start_time": "14:53",
+        "whole_day": false
+    }
+]
