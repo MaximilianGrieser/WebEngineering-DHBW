@@ -9,6 +9,8 @@ let currentDate = today.getDate();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
+let openDate = today.getDate();
+
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 let daysGrid = [
@@ -45,7 +47,7 @@ function showCalendar(month, year) {
 
     document.getElementById("currMonth").innerHTML = months[month] + " " + year;
 
-    removeMonthSpecificClasses();
+    clearGrid();
 
     let date = 1;
     for (let i = 0; i < 6; i++) {
@@ -107,21 +109,23 @@ function printDaysGrid() {
 }
 
 function appointmentsAtDay(year, month, date) {
-    let filterString = new Date(year, month, date + 1).toISOString().slice(0,10);
+    let filterString = new Date(year, month, date + 1).toISOString().slice(0, 10);
     let appointmentsAtDayList = [];
     appointmentsList.forEach(appointment => {
-        if(appointment.start_date.localeCompare(filterString) == 0){
+        if(appointment.start.slice(0, 10).localeCompare(filterString) == 0){
             appointmentsAtDayList.push(appointment);
         }
     });
     return appointmentsAtDayList;
 }
 
-function removeMonthSpecificClasses() {
+function clearGrid() {
     for (i = 0; i < 6; i++) {
         for (y = 0; y < 7; y++) {
             document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("day-not-in-month");
             document.getElementById("weekday_days_" + y + "_row_" + i).classList.remove("day-today");
+            daysGrid[i][y] = "X";
+            appointmentsGrid[i][y] = "X";
         }
     }
 }
@@ -138,7 +142,17 @@ function prevMonth() {
     showCalendar(currentMonth, currentYear);
 }
 
+function newEntryBtn() {
+    openDate = todayDate;
+    newEntry();
+}
+
 function newEntry() {
+    closeListAppointments();
+
+    let today = new Date(currentYear, currentMonth, openDate + 1).toISOString().slice(0, 10);
+    document.getElementById("fstartdate").value = today;
+
     document.getElementById("screen").classList.add("blur");
     document.getElementById("screen").disabled = true;
     document.getElementById("new-entry-form").style.display = "block";
@@ -174,15 +188,17 @@ function listAppointments(row, cell) {
     document.getElementById("appointments-at-day").style.display = "block";
 
     document.getElementById("appointments-at-day-text").innerHTML = "Appointments at " + months[currentMonth] + " " + daysGrid[row][cell] + " " + currentYear + ":"
+    openDate = daysGrid[row][cell];
+
+    let list = document.getElementById("appointments-at-day-list");
+    while(list.firstChild ){
+        list.removeChild(list.firstChild);
+    }
+
     if(appointmentsGrid[row][cell] != "X") {
-        let list = document.getElementById("appointments-at-day-list");
-        while(list.firstChild ){
-            list.removeChild(list.firstChild);
-        }
         appointmentsGrid[row][cell].forEach(appointment => {
             let item = document.createElement("li");
-            item.innerHTML = appointment.name;
-            console.log(appointment.name)
+            item.innerHTML = appointment.title;
             list.appendChild(item);
         })
     }
@@ -193,7 +209,7 @@ function deleteEntry() {
 }
 
 function readFromJSON() {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -203,29 +219,38 @@ function readFromJSON() {
         }
     }
 
-    request.open("GET", "http://127.0.0.1:5500/JASON/calender.json", false);
+    request.open("GET", "http://dhbw.radicalsimplicity.com/calendar/test/events", false);
     request.send();
 }
 
-document.querySelector('form.newEntry').addEventListener('submit', function (e) {
-    let entryForm = document.getElementById("newEntry");
-    let entryFormData = new FormData(entryForm);
+function submitEntry(){
+    let request = new XMLHttpRequest();
 
-    let Entry = {};
-    entryFormData.forEach(function (value, key) {
-        Entry[key] = value;
-    });
+    let entry = {
+        title: "Christmas Feast",
+        location: "Stuttgart",
+        organizer: "dhbw@radicalsimplicity.com",
+        start: "2020-07-24T18:00",
+        end: "2020-07-24T23:30",
+        status: "Busy",
+        allday: false,
+        webpage: "http://www.radicalsimplicity.com/",
+        categories: [],
+        extra: null
+    }
 
-    console.log(JSON.stringify(Entry));
-});
+    request.open("POST", "http://dhbw.radicalsimplicity.com/calender/test/events", true);
+    //request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    request.send(JSON.stringify(entry));
+}
 
 document.querySelector('ul').addEventListener('click', function (e) {
     let selected;
 
     if (e.target.tagName === 'LI') {
         selected = document.querySelector('li.selected');
-        if (selected) selected.className = '';                               // "
-        e.target.className = 'selected';                                    // 2b.
+        if (selected) selected.className = '';
+        e.target.className = 'selected';
     }
 });
 
