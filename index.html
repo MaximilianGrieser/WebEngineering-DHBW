@@ -139,7 +139,7 @@
             <table class="new-entry-form">
                 <tr>
                     <td class="new-entry-form-title" colspan="2">
-                        <input type="text" id="ftitle" name="title" value="TITLE">   
+                        <input type="text" id="ftitle" name="title" value="TITLE" onfocus="this.value=''">   
                     </td>
                 </tr>
                 <tr>
@@ -174,7 +174,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <textarea name="summary" id="fsummary" rows="5" cols="60">SUMMARY</textarea>
+                        <textarea name="summary" id="fsummary" rows="5" cols="60" onfocus="this.value=''">SUMMARY</textarea>
                     </td>
                 </tr>
                 <tr>
@@ -186,7 +186,7 @@
                 <tr>
                     <td>
                         <label for="femail">EMAIL</label><br>
-                        <input type="email" id="femail" name="email" value="Organizer Email">
+                        <input type="email" id="femail" name="email" value="organizer@example.de" onfocus="this.value=''">
                     </td>
                     <td>
                         <label for="fstatus">STATUS</label><br>
@@ -204,7 +204,7 @@
                     </td>
                     <td>
                         <label for="flocation">LOCATION</label><br>
-                        <input type="text" id="flocation" name="location" value="Location">
+                        <input type="text" id="flocation" name="location">
                     </td>
                 </tr>
                 <tr>

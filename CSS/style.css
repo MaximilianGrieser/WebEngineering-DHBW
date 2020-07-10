@@ -204,6 +204,10 @@ table.new-entry-form td.new-entry-form-save {
     text-align: center;
 }
 
+.false-input {
+    border: 2px solid red;
+}
+
 div.appointments-at-day {
     box-shadow: 0 0 15px 0 black;
     border-radius: 15px;

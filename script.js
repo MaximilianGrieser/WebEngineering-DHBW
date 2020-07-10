@@ -40,7 +40,7 @@ let isNewEntry = true;
 
 window.onload = function () {
     loadCategorysFromDataBase();
-    readFromJSON();
+    loadAppointmentsFromDataBase();
     document.getElementById("weekday" + todayDay).classList.add("weekday-today");
     showCalendar(currentMonth, currentYear);
 }
@@ -112,7 +112,7 @@ function printDaysGrid() {
             if(appointmentsGrid[i][y] != "X"){
                 let entrys = 0;
                 appointmentsGrid[i][y].forEach(appointment => {
-                    if(entrys <= 3){
+                    if(entrys <= 2){
                         currElement.innerHTML += "<br>" + appointment.title.substr(0,12) ;
                         entrys++;
                     }
@@ -201,6 +201,7 @@ function hideDateEnd() {
 }
 
 function closeNewEntry() {
+    removeRedBorders();
     let newEntry = document.getElementById("new-entry-form");
     if (newEntry.style.display === "block") {
         newEntry.style.display = "none";
@@ -265,15 +266,25 @@ function listAppointments(row, cell) {
                 alert("Bitte wähle einen Termin aus!!!!!! Dummkopf")
             }else {
                 isNewEntry = false;
-                document.getElementById("ftitle").value = appointmentsGrid[row][cell][selectedId].title;
-                document.getElementById("fganztag").value = appointmentsGrid[row][cell][selectedId].allday;
-                document.getElementById("fstarttime").value = appointmentsGrid[row][cell][selectedId].start.slice(11);
-                document.getElementById("fsummary").value = appointmentsGrid[row][cell][selectedId].extra;
-                document.getElementById("flocation").value = appointmentsGrid[row][cell][selectedId].location;
-                if(!appointmentsGrid[row][cell][selectedId].allday){
-                    document.getElementById("fenddate").value = appointmentsGrid[row][cell][selectedId].end.slice(0, 10);
-                    document.getElementById("fendtime").value = appointmentsGrid[row][cell][selectedId].end.slice(11);
+                let currAppointment = appointmentsGrid[row][cell][selectedId];
+                document.getElementById("ftitle").value = currAppointment.title;
+                document.getElementById("fstartdate").value = currAppointment.start.slice(0, 10)
+                document.getElementById("fstarttime").value = currAppointment.start.slice(11);
+                document.getElementById("fganztag").checked = currAppointment.allday;
+                if(!currAppointment.allday){
+                    document.getElementById("fenddate").value = currAppointment.end.slice(0, 10);
+                    document.getElementById("fendtime").value = currAppointment.end.slice(11);
+                }else{
+                    hideDateEnd();
                 }
+                document.getElementById("fsummary").value = currAppointment.extra;
+                //TODO Picture
+                document.getElementById("femail").value = currAppointment.organizer;
+                document.getElementById("fstatus").value = currAppointment.status;
+                document.getElementById("fhomepage").value = currAppointment.webpage;
+                document.getElementById("flocation").value = currAppointment.location;
+                //TODO Categories
+                //console.log(currAppointment.categories)
                 newEntry();
             }
         });
@@ -294,7 +305,7 @@ function listAppointments(row, cell) {
                     request.open("DELETE", "http://dhbw.radicalsimplicity.com/calendar/2319319/events/" + appointmentsGrid[row][cell][selectedId].id, false);
                     request.send();
 
-                    readFromJSON();
+                    loadAppointmentsFromDataBase();
                     showCalendar(currentMonth, currentYear);
                     listAppointments(row, cell);
                 }
@@ -303,7 +314,7 @@ function listAppointments(row, cell) {
     }
 }
 
-function readFromJSON() {
+function loadAppointmentsFromDataBase() {
     let request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
@@ -320,35 +331,94 @@ function readFromJSON() {
 
 function addMoreCategorys() {
     let doc = document.getElementById("table-select-td");
-    let newSelect = document.createElement("select");
-    options.forEach(option => {
-        newOption = document.createElement("option")
-        newOption.text = option.name;
-        newSelect.add(newOption);
-    });
-    newSelect.id = "fcategory";
-    newSelect.classList.add("fcategory");
-    doc.insertBefore(newSelect, doc.children[doc.childElementCount - 1]);
+    console.log(doc.children.length);
+    if(doc.children.length > options.length){
+        alert("Unmöglich mehr Kategorien anzugeben als Existieren")
+    }else{
+        let newSelect = document.createElement("select");
+        options.forEach(option => {
+            newOption = document.createElement("option")
+            newOption.text = option.name;
+            newSelect.add(newOption);
+        });
+        newSelect.id = "fcategory";
+        newSelect.classList.add("fcategory");
+        doc.insertBefore(newSelect, doc.children[doc.childElementCount - 1]);
+    }
 }
 
 function submitEntry(){
-    let cats = [];
-    document.getElementById("table-select-td").children.forEach(child => {
-        console.log(child.tagName);
-    });
+    removeRedBorders();
 
+    let title = document.getElementById("ftitle");
+    if (title.value === "TITLE" || title.value === "") {
+        title.classList.add("false-input");
+    } else {
+        title = title.value;
+    }
+
+    let sDate = document.getElementById("fstartdate");
+    if (sDate.value === "") {
+        sDate.classList.add("false-input");
+    } else {
+        sDate = sDate.value.slice(0,10);
+    }
+
+    let checkBox = document.getElementById("fganztag").checked;
+    let sTime
+    let eTime;
+    let eDate;
+    if(checkBox) {
+        sTime = "00:00";
+        eTime = "23:59";
+        eDate = sDate;
+    }else {
+        sTime = document.getElementById("fstarttime");
+        if (sTime.value === "") {
+            sTime.classList.add("false-input");
+        } else {
+            sTime = sTime.value.slice(0,5);
+        }
+
+        eDate = document.getElementById("fenddate");
+        if (eDate.value === "") {
+            eDate.classList.add("false-input");
+        } else {
+            eDate = eDate.value.slice(0,10);
+        }
+    
+        eTime = document.getElementById("fendtime");
+        if (eTime.value === "") {
+            eTime.classList.add("false-input");
+        } else {
+            eTime = eTime.value.slice(0,5);
+        }
+    }
+
+    let organizer = document.getElementById("femail");
+    if (organizer.value === "") {
+        organizer.classList.add("false-input");
+    } else {
+        organizer = organizer.value;
+    }
+
+    let cats = [];
+    let selects = document.getElementsByClassName("fcategory");
+    for (var i = 0, len = selects.length; i < len; i++) {
+        cats.push(options[selects[i].selectedIndex]);
+    }
 
     let entry = {
-        title: document.getElementById("ftitle").value,
+        title: title,
         location: document.getElementById("flocation").value,
-        organizer: "dhbw@radicalsimplicity.com",
-        start: document.getElementById("fstartdate").value.slice(0, 10) + "T" + document.getElementById("fstarttime").value.slice(0,5),
-        end: document.getElementById("fenddate").value.slice(0, 10) + "T" + document.getElementById("fendtime").value.slice(0,5),
-        status: "Busy",
-        allday: false,
+        organizer: organizer,
+        start: sDate + "T" + sTime,
+        end: eDate + "T" + eTime,
+        status: document.getElementById("fstatus").value,
+        allday: checkBox,
         webpage: "http://www.radicalsimplicity.com/",
         imageurl: null,
-        categories: JSON.stringify(cats),
+        categories: cats,
         extra: document.getElementById("fsummary").value
     }
 
@@ -367,13 +437,27 @@ function submitEntry(){
     console.log(JSON.stringify(entry));
 }
 
+function removeRedBorders() {
+    document.getElementById("ftitle").classList.remove("false-input");
+    document.getElementById("fstartdate").classList.remove("false-input");
+    document.getElementById("fstarttime").classList.remove("false-input");
+    document.getElementById("fenddate").classList.remove("false-input");
+    document.getElementById("fendtime").classList.remove("false-input");
+    document.getElementById("femail").classList.remove("false-input");
+}
+
 function getImageURL(){
-    var file = document.querySelector('input[type=file]')['files'][0];
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-        return e.target.result;
-    });
-    FR.readAsDataURL(file);
+    if (document.getElementById("fpicture").files.length == 0) {
+        return null;
+    }else {
+        var file = document.querySelector('input[type=file]')['files'][0];
+        var FR = new FileReader();
+        FR.addEventListener("load", function(e) {
+            console.log(e.target.result)
+            return e.target.result;
+        });
+        FR.readAsDataURL(file);
+    }
 }
 
 function loadCategorysFromDataBase() {
