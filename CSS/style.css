@@ -140,7 +140,7 @@ div.new-entry-form {
     display: none;
     margin: 30px auto;
     padding: 10px;
-    width: 470px;
+    width: 465px;
     color: #ffffff;
     background-color: #000000;
 }
@@ -170,9 +170,9 @@ table.new-entry-form td.new-entry-form-fullday input {
 }
 
 svg.new-entry-form-close {
-    position: fixed;
-    top: 13.5em;
-    margin-left: 410px;
+    position: absolute;
+    top: 0.7em;
+    right: 0.7em;
 }
 
 svg.new-entry-form-close:hover {

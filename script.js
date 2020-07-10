@@ -171,7 +171,7 @@ function newEntry() {
     let select = document.getElementById("fcategory");
     options.forEach(option => {
         newOption = document.createElement("option");
-        newOption.text = option;
+        newOption.text = option.name;
         select.add(newOption);
     });
 
@@ -323,7 +323,7 @@ function addMoreCategorys() {
     let newSelect = document.createElement("select");
     options.forEach(option => {
         newOption = document.createElement("option")
-        newOption.text = option;
+        newOption.text = option.name;
         newSelect.add(newOption);
     });
     newSelect.id = "fcategory";
@@ -332,6 +332,12 @@ function addMoreCategorys() {
 }
 
 function submitEntry(){
+    let cats = [];
+    document.getElementById("table-select-td").children.forEach(child => {
+        console.log(child.tagName);
+    });
+
+
     let entry = {
         title: document.getElementById("ftitle").value,
         location: document.getElementById("flocation").value,
@@ -342,7 +348,7 @@ function submitEntry(){
         allday: false,
         webpage: "http://www.radicalsimplicity.com/",
         imageurl: null,
-        categories: [],
+        categories: JSON.stringify(cats),
         extra: document.getElementById("fsummary").value
     }
 
@@ -379,7 +385,7 @@ function loadCategorysFromDataBase() {
             console.log("Read Categories");
             console.log(categories);
             categories.forEach(categorie => {
-                options.push(categorie.name)
+                options.push(categorie);
             })
         }
     }
