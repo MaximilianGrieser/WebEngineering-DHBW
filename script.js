@@ -12,7 +12,7 @@ let openDate = today.getDate();
 
 let selectedId = -1;
 
-let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let months = ["JANNUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 let options = ["X1", "X2", "X3", "X4"]
 
 let daysGrid = [
@@ -107,7 +107,9 @@ function printDaysGrid() {
             let currElement = document.getElementById("weekday_days_" + y + "_row_" + i);
             currElement.innerHTML = daysGrid[i][y];
             if(appointmentsGrid[i][y] != "X"){
-                currElement.innerHTML += "<br> Termin";
+                appointmentsGrid[i][y].forEach(appointment => {
+                    currElement.innerHTML += "<br>" + appointment.title.substr(0,12) ;
+                })
             }
         }
     }
@@ -171,17 +173,23 @@ function newEntry() {
         doc.removeChild(doc.childNodes[0]);
     }
 
-    document.getElementById("screen").classList.add("blur");
+    blurScreenAndButton();
     document.getElementById("screen").disabled = true;
     document.getElementById("new-entry-form").style.display = "block";
 }
 
 function hideDateEnd() {
-    let objekt = document.getElementById("endDate").classList;
-    if (objekt.contains("blur")) {
-        objekt.remove("blur")
+    let objekt_text = document.getElementById("endDate-text").classList;
+    let objekt_date = document.getElementById("endDate-date").classList;
+    let objekt_time = document.getElementById("endDate-time").classList;
+    if (objekt_text.contains("blur")) {
+        objekt_text.remove("blur")
+        objekt_date.remove("blur")
+        objekt_time.remove("blur")
     } else {
-        objekt.add("blur")
+        objekt_text.add("blur")
+        objekt_date.add("blur")
+        objekt_time.add("blur")
     }
 }
 
@@ -189,7 +197,7 @@ function closeNewEntry() {
     let newEntry = document.getElementById("new-entry-form");
     if (newEntry.style.display === "block") {
         newEntry.style.display = "none";
-        document.getElementById("screen").classList.remove("blur");
+        removeBlurScreenAndButton();
     }
 }
 
@@ -198,16 +206,26 @@ function closeListAppointments() {
     let listAppointment = document.getElementById("appointments-at-day");
     if (listAppointment.style.display === "block") {
         listAppointment.style.display = "none";
-        document.getElementById("screen").classList.remove("blur");
+        removeBlurScreenAndButton();
     }
+}
+
+function blurScreenAndButton(){
+    document.getElementById("screen").classList.add("blur");
+    document.getElementById("add-callender-entry").classList.add("blur");
+}
+
+function removeBlurScreenAndButton(){
+    document.getElementById("screen").classList.remove("blur");
+    document.getElementById("add-callender-entry").classList.remove("blur");
 }
 
 function listAppointments(row, cell) {
     closeNewEntry();
-    document.getElementById("screen").classList.add("blur");
+    blurScreenAndButton();
     document.getElementById("appointments-at-day").style.display = "block";
 
-    document.getElementById("appointments-at-day-text").innerHTML = "Appointments at " + months[currentMonth] + " " + daysGrid[row][cell] + " " + currentYear + ":"
+    document.getElementById("appointments-at-day-text").innerHTML = "APPOINTMENTS AT " + months[currentMonth] + " " + daysGrid[row][cell] + " " + currentYear + ":"
     openDate = daysGrid[row][cell];
 
     let list = document.getElementById("appointments-at-day-content");

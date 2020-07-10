@@ -58,13 +58,13 @@
             <div class="days">
                 <table class="days_table">
                     <tr>
-                        <th id="weekday0">Sunday</th>
-                        <th id="weekday1">Monday</th>
-                        <th id="weekday2">Tuesday</th>
-                        <th id="weekday3">Wednesday</th>
-                        <th id="weekday4">Thurday</th>
-                        <th id="weekday5">Friday</th>
-                        <th id="weekday6">Saturday</th>
+                        <th id="weekday0">SUNDAY</th>
+                        <th id="weekday1">MONDAY</th>
+                        <th id="weekday2">TUESDAY</th>
+                        <th id="weekday3">WEDNESDAY</th>
+                        <th id="weekday4">THURSDAY</th>
+                        <th id="weekday5">FRIDAY</th>
+                        <th id="weekday6">SATURDAY</th>
                     </tr>
                     <tr class="days-row0">
                         <td id="weekday_days_0_row_0" onclick="listAppointments(0,0)">X</td>
@@ -123,52 +123,73 @@
                 </table>
             </div>
         </div>
-
-        <button class="add-calender-entry" onclick="newEntryBtn()">
-            <svg class="bi bi-plus-circle" width="4em" height="4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
-                <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
-                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-            </svg>
-        </button>
     </div>
+
+    <button class="add-calender-entry" id="add-callender-entry" onclick="newEntryBtn()">
+        <svg class="bi bi-plus-circle" width="4em" height="4em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+            <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        </svg>
+    </button>
 
     <!--Neuer Termin-->
     <div class="new-entry-form" id="new-entry-form">
         <form class="newEntry" id="newEntry">
             <table class="new-entry-form">
                 <tr>
-                    <td>
-                        <input type="text" id="ftitle" name="title" value="Title">   
-                    </td>
-                    <td class="close-new-entry">
-                        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="closeNewEntry()">
-                            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
-                            <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
-                        </svg>
+                    <td class="new-entry-form-title" colspan="2">
+                        <input type="text" id="ftitle" name="title" value="TITLE">   
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <p>Start:</p>
-                        <input type="date" id="fstartdate" name="startdate"><br>
-                        <input type="time" id="fstarttime" name="starttime">
-                        <input type="checkbox" id="fganztag" name="ganztag" onclick="hideDateEnd()">
-                        <label for="fganztag">Fullday</label>
+                        START
                     </td>
-                    <td id="endDate">
-                        <p>Ende:</p>
-                        <input type="date" id="fenddate" name="enddate"><br>
+                    <td id="endDate-text">
+                        END
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="date" id="fstartdate" name="startdate">
+                    </td>
+                    <td id="endDate-date">
+                        <input type="date" id="fenddate" name="enddate">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="time" id="fstarttime" name="starttime">
+                    </td>
+                    <td id="endDate-time">
                         <input type="time" id="fendtime" name="endtime">
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="email" id="email" name="email" value="Organizer Email">
+                    <td class="new-entry-form-fullday">
+                        <input type="checkbox" id="fganztag" name="ganztag" onclick="hideDateEnd()">
+                        <label for="fganztag">FULLDAY</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea name="summary" id="fsummary" rows="5" cols="60">SUMMARY</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="fpicture">PICTURE</label><br>
+                        <input type="file" id="fpicture" name="picture" class="new-entry-form-picture">
                     </td>
                 </tr>
                 <tr>
                     <td>
+                        <label for="femail">EMAIL</label><br>
+                        <input type="email" id="femail" name="email" value="Organizer Email">
+                    </td>
+                    <td>
+                        <label for="fstatus">STATUS</label><br>
                         <select class="fstatus" id="fstatus" name="status">
                             <option>Busy</option>
                             <option>Out of Office</option>
@@ -178,32 +199,34 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="url" id="homepage" name="homepage">
+                        <label for="fhomepage">LINK</label><br>
+                        <input type="url" id="fhomepage" name="homepage">
                     </td>
-                </tr>
-                <tr>
                     <td>
+                        <label for="flocation">LOCATION</label><br>
                         <input type="text" id="flocation" name="location" value="Location">
                     </td>
                 </tr>
                 <tr>
-                    <td id="table-select-td">
-                        <select class="fcategory" id="fcategory" name="category"></select>
-                        <input type="button" value="addCategory" onclick="addMoreCategorys()">
+                    <td id="table-select-td" colspan="2">
+                        <label for="fcategory">CATEGORY<br>
+                            <select class="fcategory" id="fcategory" name="category"></select>
+                        </label>
+                        <input type="button" value="addCategory" class="new-entry-form-save" onclick="addMoreCategorys()">
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <textarea name="summary" id="fsummary" rows="10" cols="40">Summary</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
+                    <td class="new-entry-form-save" colspan="2">
                         <input type="button" id="fsubmit" value="Speichern" onclick="submitEntry()">
                     </td>
                 </tr>
             </table>
         </form>
+
+        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-x new-entry-form-close" fill="currentColor" xmlns="http://www.w3.org/2000/svg" onclick="closeNewEntry()">
+            <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z"/>
+            <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>
+        </svg>
     </div>
 
     <!-- Termine an Tag -->

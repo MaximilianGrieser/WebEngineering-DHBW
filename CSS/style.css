@@ -135,25 +135,67 @@ div.new-entry-form {
     display: none;
     margin: 0 auto;
     padding: 10px;
-    width: 600px;
+    width: 465px;
     background-color: gray;
 }
 
-table.new-entry-form{
-    width: 580px;
+table.new-entry-form {
+    width: 445;
 }
 
-table.new-entry-form td.close-new-entry {
-    text-align: right;
+table.new-entry-form td.new-entry-form-title {
+    padding: 1.2em;
+    text-align: center;
 }
 
-table.new-entry-form td.close-new-entry svg:hover {
+table.new-entry-form td.new-entry-form-title input {
+    width: 20em;
+    height: 2.5em;
+    text-align: center;
+}
+
+table.new-entry-form td.new-entry-form-fullday{
+    padding-left: 8px;
+}
+
+table.new-entry-form td.new-entry-form-fullday input {
+    margin-top: 0.5em;
+    transform: scale(1.8);
+}
+
+svg.new-entry-form-close {
+    position: fixed;
+    top: 13.5em;
+    margin-left: 410px;
+}
+
+svg.new-entry-form-close:hover {
     background: blueviolet;
 }
 
+input.new-entry-form-picture {
+    width: 445px;
+}
+
+select.fstatus {
+    height: 2em;
+    width: 182px;
+}
+
 select.fcategory {
-    width: 150px;
-    margin: 5px;
+    height: 2em;
+    width: 182px;
+    Margin-right: 2.3em;
+}
+
+input.new-entry-form-save {
+    height: 2em;
+    width: 182px;
+}
+
+table.new-entry-form td.new-entry-form-save {
+    padding-top: 1em;
+    text-align: center;
 }
 
 div.appointments-at-day {
