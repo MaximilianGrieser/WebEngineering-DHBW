@@ -5,6 +5,7 @@ div.navbar{
 
 a {
     text-decoration: none;
+    padding: .5em 1em;
 }
 
 a:link {
@@ -18,6 +19,7 @@ a:link {
   a:hover {
     color: black;
     text-decoration: none;
+      background-color: #c488e3;
   }
 
   a:active {
@@ -25,10 +27,11 @@ a:link {
   }
 
 div.month {
-    background-color: #a4facc;
+    background-color: #c488e3;
     width: 100%;
     height: 10em;
     text-align: center;
+    font-weight: bold;
 }
 
 button.button-month {
@@ -41,7 +44,7 @@ button.button-month {
 }
 
 button.button-month:hover {
-    background-color: #8bd0a8;
+    background-color: #a4facc;
 }
 
 button.prev-month {
@@ -64,7 +67,8 @@ ul.weekdays {
 }
 
 th.weekday-today {
-    background-color: #a7f1bf;
+    background-color: #000000;
+    color: white;
 }
 
 th {
@@ -99,7 +103,7 @@ th {
 }
 
 td.day-not-in-month{
-    color: hotpink;
+    color: #aaaaaa;
 }
 
 table.days_table td {
@@ -108,7 +112,8 @@ table.days_table td {
 }
 
 table.days_table td:hover{
-    background-color: blue;
+    background-color: #000000;
+    color: white;
 }
 
 button.add-calender-entry {
@@ -118,14 +123,14 @@ button.add-calender-entry {
     height: 4em;
     width: 4em;
     border-radius: 50%;
-    background-color: #a0a0a0;
+    background-color: #d7d7d7;
     border: none;
     outline: none;
     padding: 0;
     box-shadow: 0 0 15px 0 black;
 }
 button.add-calender-entry:hover {
-    background-color: #a3f6ac;
+    background-color: #c488e3;
 }
 
 div.new-entry-form {
@@ -133,14 +138,15 @@ div.new-entry-form {
     border-radius: 15px;
     position: relative;
     display: none;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 10px;
-    width: 465px;
-    background-color: gray;
+    width: 470px;
+    color: #ffffff;
+    background-color: #000000;
 }
 
 table.new-entry-form {
-    width: 445;
+    width: 445px;
 }
 
 table.new-entry-form td.new-entry-form-title {
@@ -170,7 +176,7 @@ svg.new-entry-form-close {
 }
 
 svg.new-entry-form-close:hover {
-    background: blueviolet;
+    background: #c488e3;
 }
 
 input.new-entry-form-picture {
@@ -207,7 +213,8 @@ div.appointments-at-day {
     padding: 10px;
     width: 500px;
     height: 600px;
-    background-color: gray;
+    color: #ffffff;
+    background-color: #000000;
 }
 
 p.appointments-at-day-text {
@@ -221,7 +228,7 @@ div.appointments-at-day-heading svg{
 }
 
 div.appointments-at-day svg:hover{
-    background: blueviolet;
+    background: #c488e3;
 }
 
 div.appointments-at-day-content{
@@ -237,13 +244,22 @@ div.appointments-at-day-content-entry{
 
 div.appointments-at-day-content-entry:hover{
     cursor: pointer;
-    background-color: cadetblue;
+    background-color: #c488e3;
 }
 
 div.selected {
-    background-color: lightblue;
+    background-color: #c488e3;
 }
 
 .blur{
     filter: blur(4px);
+}
+
+div.impressum{
+    width: 80vw;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5em;
+    background: #dddddd;
 }
