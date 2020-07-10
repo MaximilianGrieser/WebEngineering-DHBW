@@ -11,9 +11,11 @@ let currentYear = today.getFullYear();
 let openDate = today.getDate();
 
 let selectedId = -1;
+let selectedRow = -1;
+let selectedCell = -1;
 
 let months = ["JANNUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-let options = ["X1", "X2", "X3", "X4"]
+let options = [];
 
 let daysGrid = [
     ["X", "X", "X", "X", "X", "X", "X"],
@@ -37,6 +39,7 @@ let appointmentsList;
 let isNewEntry = true;
 
 window.onload = function () {
+    loadCategorysFromDataBase();
     readFromJSON();
     document.getElementById("weekday" + todayDay).classList.add("weekday-today");
     showCalendar(currentMonth, currentYear);
@@ -107,8 +110,12 @@ function printDaysGrid() {
             let currElement = document.getElementById("weekday_days_" + y + "_row_" + i);
             currElement.innerHTML = daysGrid[i][y];
             if(appointmentsGrid[i][y] != "X"){
+                let entrys = 0;
                 appointmentsGrid[i][y].forEach(appointment => {
-                    currElement.innerHTML += "<br>" + appointment.title.substr(0,12) ;
+                    if(entrys <= 3){
+                        currElement.innerHTML += "<br>" + appointment.title.substr(0,12) ;
+                        entrys++;
+                    }
                 })
             }
         }
@@ -202,7 +209,6 @@ function closeNewEntry() {
 }
 
 function closeListAppointments() {
-    selectedId = -1;
     let listAppointment = document.getElementById("appointments-at-day");
     if (listAppointment.style.display === "block") {
         listAppointment.style.display = "none";
@@ -221,6 +227,8 @@ function removeBlurScreenAndButton(){
 }
 
 function listAppointments(row, cell) {
+    selectedRow = row;
+    selectedCell = cell;
     closeNewEntry();
     blurScreenAndButton();
     document.getElementById("appointments-at-day").style.display = "block";
@@ -283,7 +291,7 @@ function listAppointments(row, cell) {
                         }
                     }
 
-                    request.open("DELETE", "http://dhbw.radicalsimplicity.com/calendar/test/events/" + appointmentsGrid[row][cell][selectedId].id, false);
+                    request.open("DELETE", "http://dhbw.radicalsimplicity.com/calendar/2319319/events/" + appointmentsGrid[row][cell][selectedId].id, false);
                     request.send();
 
                     readFromJSON();
@@ -306,7 +314,7 @@ function readFromJSON() {
         }
     }
 
-    request.open("GET", "http://dhbw.radicalsimplicity.com/calendar/test/events", false);
+    request.open("GET", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", false);
     request.send();
 }
 
@@ -324,53 +332,70 @@ function addMoreCategorys() {
 }
 
 function submitEntry(){
-    if (isNewEntry){
-        console.log("new");        
-        let request = new XMLHttpRequest();
+    let entry = {
+        title: document.getElementById("ftitle").value,
+        location: document.getElementById("flocation").value,
+        organizer: "dhbw@radicalsimplicity.com",
+        start: document.getElementById("fstartdate").value.slice(0, 10) + "T" + document.getElementById("fstarttime").value.slice(0,5),
+        end: document.getElementById("fenddate").value.slice(0, 10) + "T" + document.getElementById("fendtime").value.slice(0,5),
+        status: "Busy",
+        allday: false,
+        webpage: "http://www.radicalsimplicity.com/",
+        imageurl: null,
+        categories: [],
+        extra: document.getElementById("fsummary").value
+    }
 
-        let entry = {
-            title: "Christmas Feast",
-            location: "Stuttgart",
-            organizer: "dhbw@radicalsimplicity.com",
-            start: "2020-07-25T18:00",
-            end: "2020-07-25T23:30",
-            status: "Busy",
-            allday: false,
-            webpage: "http://www.radicalsimplicity.com/",
-            categories: [],
-            extra: null
-        }
-        
-        //TODO
-        request.open("POST", "http://dhbw.radicalsimplicity.com/calender/test/events", true);
-        //request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-        request.send(JSON.stringify(entry));
-        console.log(JSON.stringify(entry));
+    let request = new XMLHttpRequest();
+
+    if (isNewEntry){    
+        request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", true);
     }
     else{
-        console.log("update");
-        let request = new XMLHttpRequest();
-
-        let entry = {
-            title: document.getElementById("ftitle").value,
-            location: document.getElementById("flocation").value,
-            organizer: "dhbw@radicalsimplicity.com",
-            start: document.getElementById("fstartdate").value.slice(0, 10) + "T" +
-            document.getElementById("fstarttime").value.slice(11),
-            end: document.getElementById("fenddate").value.slice(0, 10) + "T" +
-            document.getElementById("fendtime").value.slice(11),
-            status: "Busy",
-            allday: document.getElementById("fganztag").value,
-            webpage: "http://www.radicalsimplicity.com/",
-            categories: [],
-            extra: document.getElementById("fsummary").value
-        }
-        
-        //TODO
-        request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/test/events/" + appointmentsGrid[row][cell][selectedId].id, true);
-        request.send(JSON.stringify(entry));
-        console.log(JSON.stringify(entry));
+        console.log(selectedRow, selectedCell, selectedId);
+        console.log(appointmentsGrid[selectedRow][selectedCell][selectedId].id);
+        request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
     }
+    
+    request.send(JSON.stringify(entry));
+    console.log(JSON.stringify(entry));
+}
+
+function getImageURL(){
+    var file = document.querySelector('input[type=file]')['files'][0];
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+        return e.target.result;
+    });
+    FR.readAsDataURL(file);
+}
+
+function loadCategorysFromDataBase() {
+    let request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let categories = JSON.parse(this.responseText);
+            console.log("Read Categories");
+            console.log(categories);
+            categories.forEach(categorie => {
+                options.push(categorie.name)
+            })
+        }
+    }
+
+    request.open("GET", "http://dhbw.radicalsimplicity.com/calendar/2319319/categories", true);
+    request.send();
+}
+
+function addCategoryToDataBase(data) {
+    let categorie = {
+        name: data
+    }
+
+    let request = new XMLHttpRequest();
+    request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/categories", true);
+    request.send(JSON.stringify(categorie));
 }
 
 window.onkeydown = function (event) {
