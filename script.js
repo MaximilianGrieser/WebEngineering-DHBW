@@ -16,7 +16,6 @@ let selectedCell = -1;
 
 let months = ["JANNUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 let options = [];
-
 let daysGrid = [
     ["X", "X", "X", "X", "X", "X", "X"],
     ["X", "X", "X", "X", "X", "X", "X"],
@@ -33,16 +32,15 @@ let appointmentsGrid = [
     ["X", "X", "X", "X", "X", "X", "X"],
     ["X", "X", "X", "X", "X", "X", "X"]
 ]
-
 let appointmentsList;
 
 let isNewEntry = true;
+let firstLoad = true;
 
 window.onload = function () {
     loadCategorysFromDataBase();
     loadAppointmentsFromDataBase();
     document.getElementById("weekday" + todayDay).classList.add("weekday-today");
-    showCalendar(currentMonth, currentYear);
 }
 
 function showCalendar(month, year) {
@@ -164,16 +162,10 @@ function newEntryBtn() {
 
 function newEntry() {
     closeListAppointments();
+    addSelectOptions();
 
     let today = new Date(currentYear, currentMonth, openDate + 1).toISOString().slice(0, 10);
     document.getElementById("fstartdate").value = today;
-
-    let select = document.getElementById("fcategory");
-    options.forEach(option => {
-        newOption = document.createElement("option");
-        newOption.text = option.name;
-        select.add(newOption);
-    });
 
     let doc = document.getElementById("table-select-td");
     while(doc.children.length > 2){
@@ -200,8 +192,24 @@ function hideDateEnd() {
     }
 }
 
+function addSelectOptions() {
+    if(firstLoad){
+        firstLoad = false;
+        let select = document.getElementById("fcategory");
+        let counter = 0;
+        options.forEach(option => {
+            newOption = document.createElement("option");
+            newOption.text = option.name;
+            newOption.id = "select-0-option-" + counter;
+            counter++;
+            select.add(newOption);
+        });
+    }
+}
+
 function closeNewEntry() {
     removeRedBorders();
+    resetInputFields();
     let newEntry = document.getElementById("new-entry-form");
     if (newEntry.style.display === "block") {
         newEntry.style.display = "none";
@@ -214,6 +222,28 @@ function closeListAppointments() {
     if (listAppointment.style.display === "block") {
         listAppointment.style.display = "none";
         removeBlurScreenAndButton();
+    }
+}
+
+function resetInputFields() {
+    document.getElementById("ftitle").value = "TITLE";
+    document.getElementById("fstartdate").value = new Date(currentYear, currentMonth, openDate + 1).toISOString().slice(0, 10);
+    document.getElementById("fstarttime").value = ""
+    document.getElementById("fganztag").checked = false;
+    document.getElementById("fenddate").value = "";
+    document.getElementById("fendtime").value = "";
+    document.getElementById("fsummary").value = "SUMMARY";
+    //TODO Picture
+    document.getElementById("femail").value = "organizer@example.de";
+    document.getElementById("fstatus").value = "Busy";
+    document.getElementById("fhomepage").value = "";
+    document.getElementById("flocation").value = "";
+
+    let doc = document.getElementById("table-select-td");
+    doc.children[0].value = "Private";
+    while (doc.children.length > 2) {
+        doc.children[2].value = "Private";
+        doc.removeChild(doc.children[2]);
     }
 }
 
@@ -265,6 +295,7 @@ function listAppointments(row, cell) {
             if(selectedId == -1){
                 alert("Bitte wähle einen Termin aus!!!!!! Dummkopf")
             }else {
+                addSelectOptions();
                 isNewEntry = false;
                 let currAppointment = appointmentsGrid[row][cell][selectedId];
                 document.getElementById("ftitle").value = currAppointment.title;
@@ -283,8 +314,26 @@ function listAppointments(row, cell) {
                 document.getElementById("fstatus").value = currAppointment.status;
                 document.getElementById("fhomepage").value = currAppointment.webpage;
                 document.getElementById("flocation").value = currAppointment.location;
-                //TODO Categories
-                //console.log(currAppointment.categories)
+
+                console.log(currAppointment.categories)
+                if(currAppointment.categories.length > 0) {
+                    document.getElementById("fcategory").value = currAppointment.categories[0].name;
+                    if (currAppointment.categories.length > 1) {
+                        for (let i = 1; i < currAppointment.categories.length; i++) {
+                            let doc = document.getElementById("table-select-td");
+                            let newSelect = document.createElement("select");
+                            options.forEach(option => {
+                                newOption = document.createElement("option")
+                                newOption.text = option.name;
+                                newSelect.add(newOption);
+                            });
+                            newSelect.id = "fcategory";
+                            newSelect.classList.add("fcategory");
+                            newSelect.value = currAppointment.categories[i].name;
+                            doc.append(newSelect);
+                        }
+                    }
+                }
                 newEntry();
             }
         });
@@ -327,11 +376,12 @@ function loadAppointmentsFromDataBase() {
 
     request.open("GET", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", false);
     request.send();
+
+    showCalendar(currentMonth, currentYear);
 }
 
 function addMoreCategorys() {
     let doc = document.getElementById("table-select-td");
-    console.log(doc.children.length);
     if(doc.children.length > options.length){
         alert("Unmöglich mehr Kategorien anzugeben als Existieren")
     }else{
@@ -343,7 +393,7 @@ function addMoreCategorys() {
         });
         newSelect.id = "fcategory";
         newSelect.classList.add("fcategory");
-        doc.insertBefore(newSelect, doc.children[doc.childElementCount - 1]);
+        doc.append(newSelect);
     }
 }
 
@@ -351,7 +401,7 @@ function submitEntry(){
     removeRedBorders();
 
     let title = document.getElementById("ftitle");
-    if (title.value === "TITLE" || title.value === "") {
+    if (title.value === "TITLE" || title.value === "" || title.value.length > 50) {
         title.classList.add("false-input");
     } else {
         title = title.value;
@@ -396,10 +446,24 @@ function submitEntry(){
     }
 
     let organizer = document.getElementById("femail");
-    if (organizer.value === "") {
+    if (organizer.value === "" ||organizer.value.length > 50) {
         organizer.classList.add("false-input");
     } else {
         organizer = organizer.value;
+    }
+
+    let location = document.getElementById("flocation");
+    if (location.value.length > 50) {
+        location.classList.add("false-input");
+    } else {
+        location = location.value;
+    }
+
+    let website = document.getElementById("fhomepage");
+    if (website.value.length > 100) {
+        website.classList.add("false-input");
+    } else {
+        website = website.value;
     }
 
     let cats = [];
@@ -410,19 +474,27 @@ function submitEntry(){
 
     let entry = {
         title: title,
-        location: document.getElementById("flocation").value,
+        location: location,
         organizer: organizer,
         start: sDate + "T" + sTime,
         end: eDate + "T" + eTime,
         status: document.getElementById("fstatus").value,
         allday: checkBox,
-        webpage: "http://www.radicalsimplicity.com/",
+        webpage: website,
         imageurl: null,
         categories: cats,
         extra: document.getElementById("fsummary").value
     }
 
     let request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200 && document.getElementById("fpicture").files.length != 0) {
+            alert("Event erfolgreich geadded")
+            newEvent = JSON.parse(this.responseText);
+            addImgToEventById(newEvent.id, getImageURL());
+        }
+    }
 
     if (isNewEntry){    
         request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", true);
@@ -435,6 +507,9 @@ function submitEntry(){
     
     request.send(JSON.stringify(entry));
     console.log(JSON.stringify(entry));
+
+    closeNewEntry();
+    loadAppointmentsFromDataBase();
 }
 
 function removeRedBorders() {
@@ -447,17 +522,23 @@ function removeRedBorders() {
 }
 
 function getImageURL(){
-    if (document.getElementById("fpicture").files.length == 0) {
-        return null;
-    }else {
-        var file = document.querySelector('input[type=file]')['files'][0];
-        var FR = new FileReader();
-        FR.addEventListener("load", function(e) {
-            console.log(e.target.result)
-            return e.target.result;
-        });
-        FR.readAsDataURL(file);
+    var file = document.querySelector('input[type=file]')['files'][0];
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+        console.log(e.target.result)
+        return e.target.result;
+    });
+    FR.readAsDataURL(file);
+}
+
+function addImgToEventById(id, imgData) {
+    let data = {
+        imgagedata: imgData
     }
+
+    let request = new XMLHttpRequest();
+    request.open("POST", "http://dhbw.radicalsimplicity.com/calender/2319319/images/" + id, true);
+    request.send(JSON.stringify(data));
 }
 
 function loadCategorysFromDataBase() {
