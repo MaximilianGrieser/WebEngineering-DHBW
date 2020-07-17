@@ -209,7 +209,11 @@ function addSelectOptions() {
 
 function closeNewEntry() {
     removeRedBorders();
+    if (document.getElementById("fganztag").checked == true){
+        hideDateEnd();
+    }
     resetInputFields();
+
     let newEntry = document.getElementById("new-entry-form");
     if (newEntry.style.display === "block") {
         newEntry.style.display = "none";
@@ -399,7 +403,7 @@ function addMoreCategorys() {
 
 function submitEntry(){
     removeRedBorders();
-
+    
     let title = document.getElementById("ftitle");
     if (title.value === "TITLE" || title.value === "" || title.value.length > 50) {
         title.classList.add("false-input");
@@ -472,44 +476,52 @@ function submitEntry(){
         cats.push(options[selects[i].selectedIndex]);
     }
 
-    let entry = {
-        title: title,
-        location: location,
-        organizer: organizer,
-        start: sDate + "T" + sTime,
-        end: eDate + "T" + eTime,
-        status: document.getElementById("fstatus").value,
-        allday: checkBox,
-        webpage: website,
-        imageurl: null,
-        categories: cats,
-        extra: document.getElementById("fsummary").value
-    }
+    var file = document.querySelector('input[type=file]')['files'][0];
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+        let imgUrl = e.target.result;
+        console.log(imgUrl);
 
-    let request = new XMLHttpRequest();
-
-    request.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200 && document.getElementById("fpicture").files.length != 0) {
-            alert("Event erfolgreich geadded")
-            newEvent = JSON.parse(this.responseText);
-            addImgToEventById(newEvent.id, getImageURL());
+        let entry = {
+            title: title,
+            location: location,
+            organizer: organizer,
+            start: sDate + "T" + sTime,
+            end: eDate + "T" + eTime,
+            status: document.getElementById("fstatus").value,
+            allday: checkBox,
+            webpage: website,
+            imageurl: imgUrl,
+            categories: cats,
+            extra: document.getElementById("fsummary").value
         }
-    }
-
-    if (isNewEntry){    
-        request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", true);
-    }
-    else{
-        console.log(selectedRow, selectedCell, selectedId);
-        console.log(appointmentsGrid[selectedRow][selectedCell][selectedId].id);
-        request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
-    }
     
-    request.send(JSON.stringify(entry));
-    console.log(JSON.stringify(entry));
+        let request = new XMLHttpRequest();
+    
+        request.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200 && document.getElementById("fpicture").files.length != 0) {
+                alert("Event erfolgreich geadded")
+                console.log(this.responseText)
+            }
+        }
+    
+        if (isNewEntry){    
+            request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", true);
+        }
+        else{
+            console.log(selectedRow, selectedCell, selectedId);
+            console.log(appointmentsGrid[selectedRow][selectedCell][selectedId].id);
+            request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
+        }
+        
+        request.send(JSON.stringify(entry));
+        console.log(JSON.stringify(entry));
+    
+        closeNewEntry();
+        loadAppointmentsFromDataBase();
 
-    closeNewEntry();
-    loadAppointmentsFromDataBase();
+    });
+    FR.readAsDataURL(file);
 }
 
 function removeRedBorders() {
@@ -519,26 +531,6 @@ function removeRedBorders() {
     document.getElementById("fenddate").classList.remove("false-input");
     document.getElementById("fendtime").classList.remove("false-input");
     document.getElementById("femail").classList.remove("false-input");
-}
-
-function getImageURL(){
-    var file = document.querySelector('input[type=file]')['files'][0];
-    var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-        console.log(e.target.result)
-        return e.target.result;
-    });
-    FR.readAsDataURL(file);
-}
-
-function addImgToEventById(id, imgData) {
-    let data = {
-        imgagedata: imgData
-    }
-
-    let request = new XMLHttpRequest();
-    request.open("POST", "http://dhbw.radicalsimplicity.com/calender/2319319/images/" + id, true);
-    request.send(JSON.stringify(data));
 }
 
 function loadCategorysFromDataBase() {
