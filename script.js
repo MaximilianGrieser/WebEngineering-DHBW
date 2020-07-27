@@ -37,7 +37,7 @@ let appointmentsList;
 let isNewEntry = true;
 let firstLoad = true;
 
-window.onload = function () {
+window.onload = function() {
     loadCategorysFromDataBase();
     loadAppointmentsFromDataBase();
     document.getElementById("weekday" + todayDay).classList.add("weekday-today");
@@ -84,11 +84,11 @@ function showCalendar(month, year) {
                 //Days in Month
             } else {
                 daysGrid[i][j] = date;
-                if(year === todayYear && month === todayMonth && date === todayDate){
+                if (year === todayYear && month === todayMonth && date === todayDate) {
                     document.getElementById("weekday_days_" + j + "_row_" + i).classList.add("day-today");
                 }
                 let appointmentsAtDayList = appointmentsAtDay(year, month, date);
-                if(appointmentsAtDayList.length > 0){
+                if (appointmentsAtDayList.length > 0) {
                     appointmentsGrid[i][j] = appointmentsAtDayList;
                 }
             }
@@ -107,11 +107,11 @@ function printDaysGrid() {
         for (y = 0; y < 7; y++) {
             let currElement = document.getElementById("weekday_days_" + y + "_row_" + i);
             currElement.innerHTML = daysGrid[i][y];
-            if(appointmentsGrid[i][y] != "X"){
+            if (appointmentsGrid[i][y] != "X") {
                 let entrys = 0;
                 appointmentsGrid[i][y].forEach(appointment => {
-                    if(entrys <= 2){
-                        currElement.innerHTML += "<br>" + appointment.title.substr(0,12) ;
+                    if (entrys <= 2) {
+                        currElement.innerHTML += "<br>" + appointment.title.substr(0, 12);
                         entrys++;
                     }
                 })
@@ -124,7 +124,7 @@ function appointmentsAtDay(year, month, date) {
     let filterString = new Date(year, month, date + 1).toISOString().slice(0, 10);
     let appointmentsAtDayList = [];
     appointmentsList.forEach(appointment => {
-        if(appointment.start.slice(0, 10).localeCompare(filterString) == 0){
+        if (appointment.start.slice(0, 10).localeCompare(filterString) == 0) {
             appointmentsAtDayList.push(appointment);
         }
     });
@@ -168,7 +168,7 @@ function newEntry() {
     document.getElementById("fstartdate").value = today;
 
     let doc = document.getElementById("table-select-td");
-    while(doc.children.length > 2){
+    while (doc.children.length > 2) {
         doc.removeChild(doc.childNodes[0]);
     }
 
@@ -193,7 +193,7 @@ function hideDateEnd() {
 }
 
 function addSelectOptions() {
-    if(firstLoad){
+    if (firstLoad) {
         firstLoad = false;
         let select = document.getElementById("fcategory");
         let counter = 0;
@@ -209,7 +209,7 @@ function addSelectOptions() {
 
 function closeNewEntry() {
     removeRedBorders();
-    if (document.getElementById("fganztag").checked == true){
+    if (document.getElementById("fganztag").checked == true) {
         hideDateEnd();
     }
     resetInputFields();
@@ -251,12 +251,12 @@ function resetInputFields() {
     }
 }
 
-function blurScreenAndButton(){
+function blurScreenAndButton() {
     document.getElementById("screen").classList.add("blur");
     document.getElementById("add-callender-entry").classList.add("blur");
 }
 
-function removeBlurScreenAndButton(){
+function removeBlurScreenAndButton() {
     document.getElementById("screen").classList.remove("blur");
     document.getElementById("add-callender-entry").classList.remove("blur");
 }
@@ -272,11 +272,11 @@ function listAppointments(row, cell) {
     openDate = daysGrid[row][cell];
 
     let list = document.getElementById("appointments-at-day-content");
-    while(list.firstChild){
+    while (list.firstChild) {
         list.removeChild(list.firstChild);
     }
 
-    if(appointmentsGrid[row][cell] != "X") {
+    if (appointmentsGrid[row][cell] != "X") {
         appointmentsGrid[row][cell].sort((a, b) => parseInt(a.start.slice(11)) - parseInt(b.start.slice(11)));
         let idx = 0;
         appointmentsGrid[row][cell].forEach(appointment => {
@@ -284,7 +284,7 @@ function listAppointments(row, cell) {
             let item = document.createElement("div");
             item.innerHTML = text;
             item.classList.add("appointments-at-day-content-entry");
-            item.id = "appointments-at-day-content-entry-"+idx;
+            item.id = "appointments-at-day-content-entry-" + idx;
             list.appendChild(item);
             idx++;
         })
@@ -295,10 +295,10 @@ function listAppointments(row, cell) {
             selectedId = parseInt(this.id.slice(34, 35));
         });
 
-        $(".bi-pencil-square").on("click", function(){
-            if(selectedId == -1){
+        $(".bi-pencil-square").on("click", function() {
+            if (selectedId == -1) {
                 alert("Bitte wähle einen Termin aus!!!!!! Dummkopf")
-            }else {
+            } else {
                 addSelectOptions();
                 isNewEntry = false;
                 let currAppointment = appointmentsGrid[row][cell][selectedId];
@@ -306,10 +306,10 @@ function listAppointments(row, cell) {
                 document.getElementById("fstartdate").value = currAppointment.start.slice(0, 10)
                 document.getElementById("fstarttime").value = currAppointment.start.slice(11);
                 document.getElementById("fganztag").checked = currAppointment.allday;
-                if(!currAppointment.allday){
+                if (!currAppointment.allday) {
                     document.getElementById("fenddate").value = currAppointment.end.slice(0, 10);
                     document.getElementById("fendtime").value = currAppointment.end.slice(11);
-                }else{
+                } else {
                     hideDateEnd();
                 }
                 document.getElementById("fsummary").value = currAppointment.extra;
@@ -320,7 +320,7 @@ function listAppointments(row, cell) {
                 document.getElementById("flocation").value = currAppointment.location;
 
                 console.log(currAppointment.categories)
-                if(currAppointment.categories.length > 0) {
+                if (currAppointment.categories.length > 0) {
                     document.getElementById("fcategory").value = currAppointment.categories[0].name;
                     if (currAppointment.categories.length > 1) {
                         for (let i = 1; i < currAppointment.categories.length; i++) {
@@ -342,15 +342,15 @@ function listAppointments(row, cell) {
             }
         });
 
-        $(".bi-dash-square").on("click", function(){
-            if(selectedId == -1){
+        $(".bi-dash-square").on("click", function() {
+            if (selectedId == -1) {
                 alert("Bitte wähle einen Termin aus!!!!!! Dummkopf");
-            }else {
+            } else {
                 if (confirm('Sicher löschen ?')) {
                     let request = new XMLHttpRequest();
 
-                    request.onreadystatechange = function () {
-                        if (this.readyState == 204){
+                    request.onreadystatechange = function() {
+                        if (this.readyState == 204) {
                             alert("Erfolgreich gelöscht");
                         }
                     }
@@ -370,7 +370,7 @@ function listAppointments(row, cell) {
 function loadAppointmentsFromDataBase() {
     let request = new XMLHttpRequest();
 
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             appointmentsList = JSON.parse(this.responseText);
             console.log("Read Apponitmens:");
@@ -386,9 +386,9 @@ function loadAppointmentsFromDataBase() {
 
 function addMoreCategorys() {
     let doc = document.getElementById("table-select-td");
-    if(doc.children.length > options.length){
+    if (doc.children.length > options.length) {
         alert("Unmöglich mehr Kategorien anzugeben als Existieren")
-    }else{
+    } else {
         let newSelect = document.createElement("select");
         options.forEach(option => {
             newOption = document.createElement("option")
@@ -401,9 +401,9 @@ function addMoreCategorys() {
     }
 }
 
-function submitEntry(){
+function submitEntry() {
     removeRedBorders();
-    
+
     let title = document.getElementById("ftitle");
     if (title.value === "TITLE" || title.value === "" || title.value.length > 50) {
         title.classList.add("false-input");
@@ -415,42 +415,42 @@ function submitEntry(){
     if (sDate.value === "") {
         sDate.classList.add("false-input");
     } else {
-        sDate = sDate.value.slice(0,10);
+        sDate = sDate.value.slice(0, 10);
     }
 
     let checkBox = document.getElementById("fganztag").checked;
     let sTime
     let eTime;
     let eDate;
-    if(checkBox) {
+    if (checkBox) {
         sTime = "00:00";
         eTime = "23:59";
         eDate = sDate;
-    }else {
+    } else {
         sTime = document.getElementById("fstarttime");
         if (sTime.value === "") {
             sTime.classList.add("false-input");
         } else {
-            sTime = sTime.value.slice(0,5);
+            sTime = sTime.value.slice(0, 5);
         }
 
         eDate = document.getElementById("fenddate");
         if (eDate.value === "") {
             eDate.classList.add("false-input");
         } else {
-            eDate = eDate.value.slice(0,10);
+            eDate = eDate.value.slice(0, 10);
         }
-    
+
         eTime = document.getElementById("fendtime");
         if (eTime.value === "") {
             eTime.classList.add("false-input");
         } else {
-            eTime = eTime.value.slice(0,5);
+            eTime = eTime.value.slice(0, 5);
         }
     }
 
     let organizer = document.getElementById("femail");
-    if (organizer.value === "" ||organizer.value.length > 50) {
+    if (organizer.value === "" || organizer.value.length > 50) {
         organizer.classList.add("false-input");
     } else {
         organizer = organizer.value;
@@ -495,28 +495,27 @@ function submitEntry(){
             categories: cats,
             extra: document.getElementById("fsummary").value
         }
-    
+
         let request = new XMLHttpRequest();
-    
-        request.onreadystatechange = function () {
+
+        request.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200 && document.getElementById("fpicture").files.length != 0) {
                 alert("Event erfolgreich geadded")
                 console.log(this.responseText)
             }
         }
-    
-        if (isNewEntry){    
+
+        if (isNewEntry) {
             request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", true);
-        }
-        else{
+        } else {
             console.log(selectedRow, selectedCell, selectedId);
             console.log(appointmentsGrid[selectedRow][selectedCell][selectedId].id);
             request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
         }
-        
+
         request.send(JSON.stringify(entry));
         console.log(JSON.stringify(entry));
-    
+
         closeNewEntry();
         loadAppointmentsFromDataBase();
 
@@ -536,7 +535,7 @@ function removeRedBorders() {
 function loadCategorysFromDataBase() {
     let request = new XMLHttpRequest();
 
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let categories = JSON.parse(this.responseText);
             console.log("Read Categories");
@@ -561,7 +560,20 @@ function addCategoryToDataBase(data) {
     request.send(JSON.stringify(categorie));
 }
 
-window.onkeydown = function (event) {
+$('#fpicture').change(function() {
+    alert("hallo");
+    var file = document.querySelector('input[type=file]')['files'][0];
+    console.log(file);
+    var FR = new FileReader();
+    FR.addEventListener("load", function(e) {
+        let imgUrl = e.target.result;
+        console.log(imgUrl);
+        document.getElementById("fimg").src = imgUrl;
+    });
+    FR.readAsDataURL(file);
+});
+
+window.onkeydown = function(event) {
     if (event.keyCode === 27) {
         closeNewEntry();
         closeListAppointments();

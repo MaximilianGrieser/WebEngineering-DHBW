@@ -1,4 +1,4 @@
-div.navbar{
+div.navbar {
     font-size: large;
     font-weight: bold;
 }
@@ -10,21 +10,21 @@ a {
 
 a:link {
     color: black;
-  }
+}
 
-  a:visited {
+a:visited {
     color: black;
-  }
-  
-  a:hover {
+}
+
+a:hover {
     color: black;
     text-decoration: none;
-      background-color: #c488e3;
-  }
+    background-color: #c488e3;
+}
 
-  a:active {
+a:active {
     color: black;
-  }
+}
 
 div.month {
     background-color: #c488e3;
@@ -63,7 +63,7 @@ p.month-header {
 ul.weekdays {
     margin: 0;
     padding: 10px 0;
-    background-color:#ddd;
+    background-color: #ddd;
 }
 
 th.weekday-today {
@@ -102,7 +102,7 @@ th {
     width: 14.3%;
 }
 
-td.day-not-in-month{
+td.day-not-in-month {
     color: #aaaaaa;
 }
 
@@ -111,7 +111,7 @@ table.days_table td {
     text-align: center;
 }
 
-table.days_table td:hover{
+table.days_table td:hover {
     background-color: #000000;
     color: white;
 }
@@ -129,6 +129,7 @@ button.add-calender-entry {
     padding: 0;
     box-shadow: 0 0 15px 0 black;
 }
+
 button.add-calender-entry:hover {
     background-color: #c488e3;
 }
@@ -160,7 +161,7 @@ table.new-entry-form td.new-entry-form-title input {
     text-align: center;
 }
 
-table.new-entry-form td.new-entry-form-fullday{
+table.new-entry-form td.new-entry-form-fullday {
     padding-left: 8px;
 }
 
@@ -226,26 +227,26 @@ p.appointments-at-day-text {
     font-size: x-large;
 }
 
-div.appointments-at-day-heading svg{
+div.appointments-at-day-heading svg {
     float: right;
 }
 
-div.appointments-at-day svg:hover{
+div.appointments-at-day svg:hover {
     background: #c488e3;
 }
 
-div.appointments-at-day-content{
+div.appointments-at-day-content {
     padding: 0.5em;
 }
 
-div.appointments-at-day-content-entry{
+div.appointments-at-day-content-entry {
     border-radius: 15px;
     height: 3em;
     padding-top: 0.7em;
     padding-left: 0.7em;
 }
 
-div.appointments-at-day-content-entry:hover{
+div.appointments-at-day-content-entry:hover {
     cursor: pointer;
     background-color: #c488e3;
 }
@@ -254,15 +255,24 @@ div.selected {
     background-color: #c488e3;
 }
 
-.blur{
+.blur {
     filter: blur(4px);
 }
 
-div.impressum{
+div.impressum {
     width: 80vw;
     height: auto;
     margin-left: auto;
     margin-right: auto;
     padding: 5em;
     background: #dddddd;
+}
+
+#fsummary {
+    resize: none;
+}
+
+#fimg {
+    height: 200px;
+    width: 100%;
 }
