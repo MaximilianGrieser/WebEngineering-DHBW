@@ -273,6 +273,6 @@ div.impressum {
 }
 
 #fimg {
-    height: 200px;
-    width: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
 }

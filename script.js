@@ -14,6 +14,8 @@ let selectedId = -1;
 let selectedRow = -1;
 let selectedCell = -1;
 
+let counter = 0;
+
 let months = ["JANNUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 let options = [];
 let daysGrid = [
@@ -157,20 +159,21 @@ function prevMonth() {
 function newEntryBtn() {
     openDate = todayDate;
     isNewEntry = true;
+    addMoreCategorys();
+    newEntry();
+}
+
+function newEntryIcon() {
+    isNewEntry = true;
+    addMoreCategorys();
     newEntry();
 }
 
 function newEntry() {
     closeListAppointments();
-    addSelectOptions();
 
     let today = new Date(currentYear, currentMonth, openDate + 1).toISOString().slice(0, 10);
     document.getElementById("fstartdate").value = today;
-
-    let doc = document.getElementById("table-select-td");
-    while (doc.children.length > 2) {
-        doc.removeChild(doc.childNodes[0]);
-    }
 
     blurScreenAndButton();
     document.getElementById("screen").disabled = true;
@@ -189,21 +192,6 @@ function hideDateEnd() {
         objekt_text.add("blur")
         objekt_date.add("blur")
         objekt_time.add("blur")
-    }
-}
-
-function addSelectOptions() {
-    if (firstLoad) {
-        firstLoad = false;
-        let select = document.getElementById("fcategory");
-        let counter = 0;
-        options.forEach(option => {
-            newOption = document.createElement("option");
-            newOption.text = option.name;
-            newOption.id = "select-0-option-" + counter;
-            counter++;
-            select.add(newOption);
-        });
     }
 }
 
@@ -237,18 +225,16 @@ function resetInputFields() {
     document.getElementById("fenddate").value = "";
     document.getElementById("fendtime").value = "";
     document.getElementById("fsummary").value = "SUMMARY";
-    //TODO Picture
+    document.getElementById("fimg").style.background = "";
+    document.getElementById("fimg").style.width = 0;
+    document.getElementById("fimg").style.height = 0;
+    document.getElementById("fpicture").value = "";
     document.getElementById("femail").value = "organizer@example.de";
     document.getElementById("fstatus").value = "Busy";
     document.getElementById("fhomepage").value = "";
     document.getElementById("flocation").value = "";
-
-    let doc = document.getElementById("table-select-td");
-    doc.children[0].value = "Private";
-    while (doc.children.length > 2) {
-        doc.children[2].value = "Private";
-        doc.removeChild(doc.children[2]);
-    }
+    document.getElementById("table-select-td").innerHTML = "";
+    counter = 0;
 }
 
 function blurScreenAndButton() {
@@ -297,9 +283,11 @@ function listAppointments(row, cell) {
 
         $(".bi-pencil-square").on("click", function() {
             if (selectedId == -1) {
-                alert("Bitte wähle einen Termin aus!!!!!! Dummkopf")
+                alert("Bitte wähle einen Termin aus!")
             } else {
-                addSelectOptions();
+                document.getElementById("table-select-td").innerHTML = "";
+                counter = 0;
+                addMoreCategorys();
                 isNewEntry = false;
                 let currAppointment = appointmentsGrid[row][cell][selectedId];
                 document.getElementById("ftitle").value = currAppointment.title;
@@ -313,29 +301,28 @@ function listAppointments(row, cell) {
                     hideDateEnd();
                 }
                 document.getElementById("fsummary").value = currAppointment.extra;
-                //TODO Picture
+                checkImgSize(currAppointment.imageurl);
                 document.getElementById("femail").value = currAppointment.organizer;
                 document.getElementById("fstatus").value = currAppointment.status;
                 document.getElementById("fhomepage").value = currAppointment.webpage;
                 document.getElementById("flocation").value = currAppointment.location;
 
                 console.log(currAppointment.categories)
-                if (currAppointment.categories.length > 0) {
-                    document.getElementById("fcategory").value = currAppointment.categories[0].name;
-                    if (currAppointment.categories.length > 1) {
-                        for (let i = 1; i < currAppointment.categories.length; i++) {
-                            let doc = document.getElementById("table-select-td");
-                            let newSelect = document.createElement("select");
-                            options.forEach(option => {
-                                newOption = document.createElement("option")
-                                newOption.text = option.name;
-                                newSelect.add(newOption);
-                            });
-                            newSelect.id = "fcategory";
-                            newSelect.classList.add("fcategory");
-                            newSelect.value = currAppointment.categories[i].name;
-                            doc.append(newSelect);
-                        }
+                if (currAppointment.categories.length == 1) {
+                    document.getElementById("fcategory-0").value = currAppointment.categories[0].name;
+                } else {
+                    let doc = document.getElementById("table-select-td");
+                    for (let i = 1; i < currAppointment.categories.length; i++) {
+                        let newSelect = document.createElement("select");
+                        options.forEach(option => {
+                            newOption = document.createElement("option")
+                            newOption.text = option.name;
+                            newSelect.add(newOption);
+                        });
+                        newSelect.id = "fcategory-" + i;
+                        newSelect.classList.add("fcategory");
+                        newSelect.value = currAppointment.categories[i].name;
+                        doc.append(newSelect);
                     }
                 }
                 newEntry();
@@ -344,7 +331,7 @@ function listAppointments(row, cell) {
 
         $(".bi-dash-square").on("click", function() {
             if (selectedId == -1) {
-                alert("Bitte wähle einen Termin aus!!!!!! Dummkopf");
+                alert("Bitte wähle einen Termin aus!");
             } else {
                 if (confirm('Sicher löschen ?')) {
                     let request = new XMLHttpRequest();
@@ -386,7 +373,7 @@ function loadAppointmentsFromDataBase() {
 
 function addMoreCategorys() {
     let doc = document.getElementById("table-select-td");
-    if (doc.children.length > options.length) {
+    if (doc.children.length >= options.length) {
         alert("Unmöglich mehr Kategorien anzugeben als Existieren")
     } else {
         let newSelect = document.createElement("select");
@@ -395,7 +382,8 @@ function addMoreCategorys() {
             newOption.text = option.name;
             newSelect.add(newOption);
         });
-        newSelect.id = "fcategory";
+        newSelect.id = "fcategory-" + counter;
+        counter++;
         newSelect.classList.add("fcategory");
         doc.append(newSelect);
     }
@@ -476,12 +464,17 @@ function submitEntry() {
         cats.push(options[selects[i].selectedIndex]);
     }
 
+    let imgUrl = null;
     var file = document.querySelector('input[type=file]')['files'][0];
     var FR = new FileReader();
-    FR.addEventListener("load", function(e) {
-        let imgUrl = e.target.result;
-        console.log(imgUrl);
+    if (file != undefined) {
+        FR.readAsDataURL(file);
+        FR.addEventListener("load", function(e) {
+            imgUrl = e.target.result;
+        });
+    }
 
+    setTimeout(() => {
         let entry = {
             title: title,
             location: location,
@@ -495,16 +488,16 @@ function submitEntry() {
             categories: cats,
             extra: document.getElementById("fsummary").value
         }
-
+    
         let request = new XMLHttpRequest();
-
+    
         request.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200 && document.getElementById("fpicture").files.length != 0) {
                 alert("Event erfolgreich geadded")
                 console.log(this.responseText)
             }
         }
-
+    
         if (isNewEntry) {
             request.open("POST", "http://dhbw.radicalsimplicity.com/calendar/2319319/events", true);
         } else {
@@ -512,15 +505,13 @@ function submitEntry() {
             console.log(appointmentsGrid[selectedRow][selectedCell][selectedId].id);
             request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
         }
-
+    
         request.send(JSON.stringify(entry));
         console.log(JSON.stringify(entry));
-
+    
         closeNewEntry();
         loadAppointmentsFromDataBase();
-
-    });
-    FR.readAsDataURL(file);
+    }, 300);
 }
 
 function removeRedBorders() {
@@ -560,15 +551,31 @@ function addCategoryToDataBase(data) {
     request.send(JSON.stringify(categorie));
 }
 
+function checkImgSize(imgUrl, docImg) {
+    let img = new Image();
+    img.src = imgUrl;
+    img.onload = function() {
+        if (this.height <= 200){
+            docImg.style.height = this.height;
+        }else {
+            docImg.style.height = "200px";
+        }
+        if (this.width <= 440){
+            docImg.style.width = this.width;
+        }else {
+            docImg.style.width = "440ppx";
+        }
+    };
+}
+
 $('#fpicture').change(function() {
-    alert("hallo");
     var file = document.querySelector('input[type=file]')['files'][0];
-    console.log(file);
+    let docImg = document.getElementById("fimg");
     var FR = new FileReader();
     FR.addEventListener("load", function(e) {
         let imgUrl = e.target.result;
-        console.log(imgUrl);
-        document.getElementById("fimg").src = imgUrl;
+        checkImgSize(imgUrl, docImg);
+        docImg.style.backgroundImage = "url('" + imgUrl + "')";
     });
     FR.readAsDataURL(file);
 });
