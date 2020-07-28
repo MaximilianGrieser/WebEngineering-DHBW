@@ -43,6 +43,9 @@ window.onload = function() {
     loadCategorysFromDataBase();
     loadAppointmentsFromDataBase();
     document.getElementById("weekday" + todayDay).classList.add("weekday-today");
+    let minDate = today.toISOString().slice(0, 10);
+    $('#fstartdate').attr('min', minDate);
+    $('#fenddate').attr('min', minDate);
 }
 
 function showCalendar(month, year) {
@@ -492,9 +495,9 @@ function submitEntry() {
         let request = new XMLHttpRequest();
     
         request.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200 && document.getElementById("fpicture").files.length != 0) {
-                alert("Event erfolgreich geadded")
-                console.log(this.responseText)
+            if (this.readyState == 4 && this.status == 200) {
+                alert("Event erfolgreich geadded");
+                console.log(this.responseText);
             }
         }
     
@@ -555,6 +558,7 @@ function checkImgSize(imgUrl, docImg) {
     let img = new Image();
     img.src = imgUrl;
     img.onload = function() {
+        //console.log(this.width + "X" + this.height);
         if (this.height <= 200){
             docImg.style.height = this.height;
         }else {
