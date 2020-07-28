@@ -304,7 +304,9 @@ function listAppointments(row, cell) {
                     hideDateEnd();
                 }
                 document.getElementById("fsummary").value = currAppointment.extra;
-                checkImgSize(currAppointment.imageurl);
+                let docImg = document.getElementById("fimg");
+                checkImgSize(currAppointment.imageurl, docImg);
+                docImg.style.backgroundImage = "url('" + currAppointment.imageurl + "')";
                 document.getElementById("femail").value = currAppointment.organizer;
                 document.getElementById("fstatus").value = currAppointment.status;
                 document.getElementById("fhomepage").value = currAppointment.webpage;
@@ -351,6 +353,7 @@ function listAppointments(row, cell) {
                     loadAppointmentsFromDataBase();
                     showCalendar(currentMonth, currentYear);
                     listAppointments(row, cell);
+                    location.reload();
                 }
             }
         });
@@ -394,6 +397,16 @@ function addMoreCategorys() {
 
 function submitEntry() {
     removeRedBorders();
+
+    let imgUrl = null;
+    var file = document.querySelector('input[type=file]')['files'][0];
+    var FR = new FileReader();
+    if (file != undefined) {
+        FR.readAsDataURL(file);
+        FR.addEventListener("load", function(e) {
+            imgUrl = e.target.result;
+        });
+    }
 
     let title = document.getElementById("ftitle");
     if (title.value === "TITLE" || title.value === "" || title.value.length > 50) {
@@ -467,16 +480,6 @@ function submitEntry() {
         cats.push(options[selects[i].selectedIndex]);
     }
 
-    let imgUrl = null;
-    var file = document.querySelector('input[type=file]')['files'][0];
-    var FR = new FileReader();
-    if (file != undefined) {
-        FR.readAsDataURL(file);
-        FR.addEventListener("load", function(e) {
-            imgUrl = e.target.result;
-        });
-    }
-
     setTimeout(() => {
         let entry = {
             title: title,
@@ -487,7 +490,7 @@ function submitEntry() {
             status: document.getElementById("fstatus").value,
             allday: checkBox,
             webpage: website,
-            imageurl: imgUrl,
+            imagedata: imgUrl,
             categories: cats,
             extra: document.getElementById("fsummary").value
         }
@@ -498,6 +501,7 @@ function submitEntry() {
             if (this.readyState == 4 && this.status == 200) {
                 alert("Event erfolgreich geadded");
                 console.log(this.responseText);
+                location.reload();
             }
         }
     
@@ -567,7 +571,7 @@ function checkImgSize(imgUrl, docImg) {
         if (this.width <= 440){
             docImg.style.width = this.width;
         }else {
-            docImg.style.width = "440ppx";
+            docImg.style.width = "440px";
         }
     };
 }
