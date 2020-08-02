@@ -251,112 +251,114 @@ function removeBlurScreenAndButton() {
 }
 
 function listAppointments(row, cell) {
-    selectedRow = row;
-    selectedCell = cell;
-    closeNewEntry();
-    blurScreenAndButton();
-    document.getElementById("appointments-at-day").style.display = "block";
-
-    document.getElementById("appointments-at-day-text").innerHTML = "APPOINTMENTS AT " + months[currentMonth] + " " + daysGrid[row][cell] + " " + currentYear + ":"
-    openDate = daysGrid[row][cell];
-
-    let list = document.getElementById("appointments-at-day-content");
-    while (list.firstChild) {
-        list.removeChild(list.firstChild);
-    }
-
-    if (appointmentsGrid[row][cell] != "X") {
-        appointmentsGrid[row][cell].sort((a, b) => parseInt(a.start.slice(11)) - parseInt(b.start.slice(11)));
-        let idx = 0;
-        appointmentsGrid[row][cell].forEach(appointment => {
-            let text = appointment.start.slice(11) + " : " + appointment.title;
-            let item = document.createElement("div");
-            item.innerHTML = text;
-            item.classList.add("appointments-at-day-content-entry");
-            item.id = "appointments-at-day-content-entry-" + idx;
-            list.appendChild(item);
-            idx++;
-        })
-
-        $(".appointments-at-day-content-entry").on("click", function() {
-            $(".appointments-at-day-content>div.selected").removeClass("selected");
-            this.classList.add("selected");
-            selectedId = parseInt(this.id.slice(34, 35));
-        });
-
-        $(".bi-pencil-square").on("click", function() {
-            if (selectedId == -1) {
-                alert("Bitte wähle einen Termin aus!")
-            } else {
-                document.getElementById("table-select-td").innerHTML = "";
-                counter = 0;
-                addMoreCategorys();
-                isNewEntry = false;
-                let currAppointment = appointmentsGrid[row][cell][selectedId];
-                document.getElementById("ftitle").value = currAppointment.title;
-                document.getElementById("fstartdate").value = currAppointment.start.slice(0, 10)
-                document.getElementById("fstarttime").value = currAppointment.start.slice(11);
-                document.getElementById("fganztag").checked = currAppointment.allday;
-                if (!currAppointment.allday) {
-                    document.getElementById("fenddate").value = currAppointment.end.slice(0, 10);
-                    document.getElementById("fendtime").value = currAppointment.end.slice(11);
+    if (document.getElementById("weekday_days_" + cell + "_row_" + row).classList.contains("day-not-in-month") == false){
+        selectedRow = row;
+        selectedCell = cell;
+        closeNewEntry();
+        blurScreenAndButton();
+        document.getElementById("appointments-at-day").style.display = "block";
+    
+        document.getElementById("appointments-at-day-text").innerHTML = "APPOINTMENTS AT " + months[currentMonth] + " " + daysGrid[row][cell] + " " + currentYear + ":"
+        openDate = daysGrid[row][cell];
+    
+        let list = document.getElementById("appointments-at-day-content");
+        while (list.firstChild) {
+            list.removeChild(list.firstChild);
+        }
+    
+        if (appointmentsGrid[row][cell] != "X") {
+            appointmentsGrid[row][cell].sort((a, b) => parseInt(a.start.slice(11)) - parseInt(b.start.slice(11)));
+            let idx = 0;
+            appointmentsGrid[row][cell].forEach(appointment => {
+                let text = appointment.start.slice(11) + " : " + appointment.title;
+                let item = document.createElement("div");
+                item.innerHTML = text;
+                item.classList.add("appointments-at-day-content-entry");
+                item.id = "appointments-at-day-content-entry-" + idx;
+                list.appendChild(item);
+                idx++;
+            })
+    
+            $(".appointments-at-day-content-entry").on("click", function() {
+                $(".appointments-at-day-content>div.selected").removeClass("selected");
+                this.classList.add("selected");
+                selectedId = parseInt(this.id.slice(34, 35));
+            });
+    
+            $(".bi-pencil-square").on("click", function() {
+                if (selectedId == -1) {
+                    alert("Bitte wähle einen Termin aus!")
                 } else {
-                    hideDateEnd();
-                }
-                document.getElementById("fsummary").value = currAppointment.extra;
-                let docImg = document.getElementById("fimg");
-                checkImgSize(currAppointment.imageurl, docImg);
-                docImg.style.backgroundImage = "url('" + currAppointment.imageurl + "')";
-                document.getElementById("femail").value = currAppointment.organizer;
-                document.getElementById("fstatus").value = currAppointment.status;
-                document.getElementById("fhomepage").value = currAppointment.webpage;
-                document.getElementById("flocation").value = currAppointment.location;
-
-                console.log(currAppointment.categories)
-                if (currAppointment.categories.length == 1) {
-                    document.getElementById("fcategory-0").value = currAppointment.categories[0].name;
-                } else {
-                    let doc = document.getElementById("table-select-td");
-                    for (let i = 1; i < currAppointment.categories.length; i++) {
-                        let newSelect = document.createElement("select");
-                        options.forEach(option => {
-                            newOption = document.createElement("option")
-                            newOption.text = option.name;
-                            newSelect.add(newOption);
-                        });
-                        newSelect.id = "fcategory-" + i;
-                        newSelect.classList.add("fcategory");
-                        newSelect.value = currAppointment.categories[i].name;
-                        doc.append(newSelect);
+                    document.getElementById("table-select-td").innerHTML = "";
+                    counter = 0;
+                    addMoreCategorys();
+                    isNewEntry = false;
+                    let currAppointment = appointmentsGrid[row][cell][selectedId];
+                    document.getElementById("ftitle").value = currAppointment.title;
+                    document.getElementById("fstartdate").value = currAppointment.start.slice(0, 10)
+                    document.getElementById("fstarttime").value = currAppointment.start.slice(11);
+                    document.getElementById("fganztag").checked = currAppointment.allday;
+                    if (!currAppointment.allday) {
+                        document.getElementById("fenddate").value = currAppointment.end.slice(0, 10);
+                        document.getElementById("fendtime").value = currAppointment.end.slice(11);
+                    } else {
+                        hideDateEnd();
                     }
-                }
-                newEntry();
-            }
-        });
-
-        $(".bi-dash-square").on("click", function() {
-            if (selectedId == -1) {
-                alert("Bitte wähle einen Termin aus!");
-            } else {
-                if (confirm('Sicher löschen ?')) {
-                    let request = new XMLHttpRequest();
-
-                    request.onreadystatechange = function() {
-                        if (this.readyState == 204) {
-                            alert("Erfolgreich gelöscht");
+                    document.getElementById("fsummary").value = currAppointment.extra;
+                    let docImg = document.getElementById("fimg");
+                    checkImgSize(currAppointment.imageurl, docImg);
+                    docImg.style.backgroundImage = "url('" + currAppointment.imageurl + "')";
+                    document.getElementById("femail").value = currAppointment.organizer;
+                    document.getElementById("fstatus").value = currAppointment.status;
+                    document.getElementById("fhomepage").value = currAppointment.webpage;
+                    document.getElementById("flocation").value = currAppointment.location;
+    
+                    console.log(currAppointment.categories)
+                    if (currAppointment.categories.length == 1) {
+                        document.getElementById("fcategory-0").value = currAppointment.categories[0].name;
+                    } else {
+                        let doc = document.getElementById("table-select-td");
+                        for (let i = 1; i < currAppointment.categories.length; i++) {
+                            let newSelect = document.createElement("select");
+                            options.forEach(option => {
+                                newOption = document.createElement("option")
+                                newOption.text = option.name;
+                                newSelect.add(newOption);
+                            });
+                            newSelect.id = "fcategory-" + i;
+                            newSelect.classList.add("fcategory");
+                            newSelect.value = currAppointment.categories[i].name;
+                            doc.append(newSelect);
                         }
                     }
-
-                    request.open("DELETE", "http://dhbw.radicalsimplicity.com/calendar/2319319/events/" + appointmentsGrid[row][cell][selectedId].id, false);
-                    request.send();
-
-                    loadAppointmentsFromDataBase();
-                    showCalendar(currentMonth, currentYear);
-                    listAppointments(row, cell);
-                    location.reload();
+                    newEntry();
                 }
-            }
-        });
+            });
+    
+            $(".bi-dash-square").on("click", function() {
+                if (selectedId == -1) {
+                    alert("Bitte wähle einen Termin aus!");
+                } else {
+                    if (confirm('Sicher löschen ?')) {
+                        let request = new XMLHttpRequest();
+    
+                        request.onreadystatechange = function() {
+                            if (this.readyState == 204) {
+                                alert("Erfolgreich gelöscht");
+                            }
+                        }
+    
+                        request.open("DELETE", "http://dhbw.radicalsimplicity.com/calendar/2319319/events/" + appointmentsGrid[row][cell][selectedId].id, false);
+                        request.send();
+    
+                        loadAppointmentsFromDataBase();
+                        showCalendar(currentMonth, currentYear);
+                        listAppointments(row, cell);
+                        location.reload();
+                    }
+                }
+            });
+        }
     }
 }
 
@@ -398,6 +400,7 @@ function addMoreCategorys() {
 function submitEntry() {
     removeRedBorders();
 
+    let checked = true;
     let imgUrl = null;
     var file = document.querySelector('input[type=file]')['files'][0];
     var FR = new FileReader();
@@ -411,6 +414,7 @@ function submitEntry() {
     let title = document.getElementById("ftitle");
     if (title.value === "TITLE" || title.value === "" || title.value.length > 50) {
         title.classList.add("false-input");
+        checked = false;
     } else {
         title = title.value;
     }
@@ -418,6 +422,7 @@ function submitEntry() {
     let sDate = document.getElementById("fstartdate");
     if (sDate.value === "") {
         sDate.classList.add("false-input");
+        checked = false;
     } else {
         sDate = sDate.value.slice(0, 10);
     }
@@ -434,6 +439,7 @@ function submitEntry() {
         sTime = document.getElementById("fstarttime");
         if (sTime.value === "") {
             sTime.classList.add("false-input");
+            checked = false;
         } else {
             sTime = sTime.value.slice(0, 5);
         }
@@ -441,6 +447,7 @@ function submitEntry() {
         eDate = document.getElementById("fenddate");
         if (eDate.value === "") {
             eDate.classList.add("false-input");
+            checked = false;
         } else {
             eDate = eDate.value.slice(0, 10);
         }
@@ -448,6 +455,7 @@ function submitEntry() {
         eTime = document.getElementById("fendtime");
         if (eTime.value === "") {
             eTime.classList.add("false-input");
+            checked = false;
         } else {
             eTime = eTime.value.slice(0, 5);
         }
@@ -456,6 +464,7 @@ function submitEntry() {
     let organizer = document.getElementById("femail");
     if (organizer.value === "" || organizer.value.length > 50) {
         organizer.classList.add("false-input");
+        checked = false;
     } else {
         organizer = organizer.value;
     }
@@ -463,6 +472,7 @@ function submitEntry() {
     let location = document.getElementById("flocation");
     if (location.value.length > 50) {
         location.classList.add("false-input");
+        checked = false;
     } else {
         location = location.value;
     }
@@ -470,6 +480,7 @@ function submitEntry() {
     let website = document.getElementById("fhomepage");
     if (website.value.length > 100) {
         website.classList.add("false-input");
+        checked = false;
     } else {
         website = website.value;
     }
@@ -480,7 +491,7 @@ function submitEntry() {
         cats.push(options[selects[i].selectedIndex]);
     }
 
-    setTimeout(() => {
+    if(checked) {    setTimeout(() => {
         let entry = {
             title: title,
             location: location,
@@ -501,7 +512,7 @@ function submitEntry() {
             if (this.readyState == 4 && this.status == 200) {
                 alert("Event erfolgreich geadded");
                 console.log(this.responseText);
-                location.reload();
+                window.location.reload();
             }
         }
     
@@ -510,15 +521,14 @@ function submitEntry() {
         } else {
             console.log(selectedRow, selectedCell, selectedId);
             console.log(appointmentsGrid[selectedRow][selectedCell][selectedId].id);
-            request.open("PUT", "http://dhbw.radicalsimplicity.com/calender/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
+            request.open("PUT", "http://dhbw.radicalsimplicity.com/calendar/2319319/events/" + appointmentsGrid[selectedRow][selectedCell][selectedId].id, true);
         }
-    
-        request.send(JSON.stringify(entry));
         console.log(JSON.stringify(entry));
+        request.send(JSON.stringify(entry));
     
         closeNewEntry();
         loadAppointmentsFromDataBase();
-    }, 300);
+    }, 300);}
 }
 
 function removeRedBorders() {
@@ -562,7 +572,6 @@ function checkImgSize(imgUrl, docImg) {
     let img = new Image();
     img.src = imgUrl;
     img.onload = function() {
-        //console.log(this.width + "X" + this.height);
         if (this.height <= 200){
             docImg.style.height = this.height;
         }else {
